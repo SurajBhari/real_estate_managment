@@ -103,10 +103,15 @@ def _get_available_status():
 def get_available_status():
     return jsonify(_get_available_status())
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_file('static/favicon.ico')
+
 @app.before_request
 def before_request():
     # if the request is from the login page, don't check the session
-    if request.endpoint in ['login', 'static', 'favicon']:
+    print(request.endpoint)
+    if request.endpoint in ['login', 'static', 'favicon', 'favicon.ico']:
         return None
     try:
         lastused = session['lastused']
