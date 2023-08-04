@@ -9,7 +9,7 @@
     {% block title %} {{ title }} {% endblock %}
 
     {% block content %}
-    <h1>Incentive</h1>
+    <h2>Incentive</h2>
     <form>
         <label for="advisors">Select Advisor:</label>
         <select id="advisors" onchange="doMagic()">
@@ -28,7 +28,7 @@
         <!-- a button to download selecetd month incentive for all advisor-->
         <button id="download"><a href="/download">Download </a></button>
     </form>
-    <h1>Collected</h1>
+    <h2>Collected</h2>
     <table id="data" name="data">
         <tr>
             <th>Plot Name</th>
@@ -37,7 +37,7 @@
             <th>Reciept Ammount</th>
         </tr>
     </table>
-    <h1>Uncollected</h1>
+    <h2>Uncollected</h2>
     <table id="uncollected" name="uncollected">
         <tr>
             <th>Plot Name</th>
