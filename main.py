@@ -280,9 +280,6 @@ def download(month=None, radvisor=None):
     workbook.save(file_name)
     return send_file(file_name, as_attachment=True)
         
-
-                    
-
 @app.route("/get_incentive/<month>/<advisor>")
 @app.route("/get_incentive/<month>")
 @app.route("/get_incentive/")
