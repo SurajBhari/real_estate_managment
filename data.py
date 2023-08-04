@@ -88,7 +88,6 @@ for project in projects:
                 }
             else:
                 emi_details = {}
-                reciept_entry = []
             plot = {
                 "size": size,
                 "rate": rate,
