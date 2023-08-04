@@ -150,7 +150,6 @@ def incentive():
         data=tabular_data,
         advisors= _get_advisors(),
         months = unique_months,
-        title="Incentive"
     )
 
 
