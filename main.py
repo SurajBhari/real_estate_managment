@@ -447,7 +447,41 @@ def search():
                     ]
                 )
     
+    # if there is a '' in any of the data remove it 
+    for x in unique_rate:
+        if x == "":
+            unique_rate.remove(x)
+    for x in unique_price:
+        if x == "":
+            unique_price.remove(x)
+    for x in unique_size:
+        if x == "":
+            unique_size.remove(x)
+    for x in unique_date:
+        if x == "":
+            unique_date.remove(x)
+    for x in unique_status:
+        if x == "":
+            unique_status.remove(x)
+    for x in unique_customer_names:
+        if x == "":
+            unique_customer_names.remove(x)
+    for x in unique_advisors:
+        if x == "":
+            unique_advisors.remove(x)
+    for x in unique_months:
+        if x == "":
+            unique_months.remove(x)
 
+    unique_advisors.sort()
+    unique_months.sort()
+    unique_customer_names.sort()
+    unique_status.sort()
+    unique_date.sort()
+    unique_size.sort()
+    unique_rate.sort()
+    unique_price.sort()
+    plot_identifications.sort()    
     return render_template(
         'home/search.html', 
         data=data,
