@@ -144,10 +144,9 @@ def incentive():
                 if data[project]['sectors'][sector]['plots'][plot]['status'].lower() in ["available", "not for sale", "held"]:
                     continue
                 month = "-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[:2])
-                if month not in unique_months:
+                if month and month not in unique_months:
                     unique_months.append(month)
-                
-    
+    unique_months.sort()
     return render_template(
         'home/incentive.html', 
         data=tabular_data,
@@ -376,7 +375,10 @@ def _get_unique_months():
         for sector in data[project]['sectors']:
             for plot in data[project]['sectors'][sector]['plots']:
                 if "-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[1:]) not in unique_months:
-                    unique_months.append("-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[:2]))
+                    date = "-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[:2])
+                    if date and date not in unique_months:
+                        unique_months.append(date)
+    unique_months.sort()
     return unique_months
 @app.route("/search")
 def search():
@@ -749,7 +751,10 @@ def _get_advisors():
         for sector in data[project]['sectors']:
             for plot in data[project]['sectors'][sector]['plots']:
                 if data[project]['sectors'][sector]['plots'][plot]['advisor'] not in advisors:
-                    advisors.append(data[project]['sectors'][sector]['plots'][plot]['advisor'])
+                    if data[project]['sectors'][sector]['plots'][plot]['advisor']:
+                        advisors.append(data[project]['sectors'][sector]['plots'][plot]['advisor'])
+
+    advisors.sort()
     return advisors
 
 @app.route("/get_advisors")
