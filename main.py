@@ -124,9 +124,12 @@ def before_request():
 
 @app.route('/logout')
 def logout():
-    session.pop('loggedin', None)
+    print("logout")
+    session['loggedin'] = False
     session.pop('id', None)
     session.pop('username', None)
+    session.pop('lastused', None)
+
     return redirect(url_for('login'))
 
 @app.route("/incentive")
@@ -165,7 +168,6 @@ def download(month=None, radvisor=None):
         if not month[0].isnumeric():
             radvisor = month
             month = None
-    print(f"/download/{month}/{radvisor}")
     worksheet = workbook.active
     for advisor in _get_advisors():
         if radvisor:
@@ -174,7 +176,6 @@ def download(month=None, radvisor=None):
         tabular_data = []
         uncollected = []
         for project in data:
-            print(project)
             for sector in data[project]['sectors']:
                 for plot in data[project]['sectors'][sector]['plots']:
                     if data[project]['sectors'][sector]['plots'][plot]['status'].lower() in ["available", "not for sale", "held"]:
@@ -282,15 +283,11 @@ def get_incentive(month=None, advisor=None):
     with open('data.json', "r") as f:
         data = json.load(f)
     # if there is no number in the month then it is advisor and the month is None
-    print(f"/get_incentive/{month}/{advisor}")
-
     if month:
         have_number = False
         if not month[0].isnumeric():
             advisor = month
             month = None
-            print('Flipped')
-    print(f"/get_incentive/{month}/{advisor}")
     incentive = {}
     tabular_data = []
     uncollected = []
@@ -677,7 +674,6 @@ def get_month_emi(yearmonth=None, project=None):
                             data[project]['sectors'][sector]['plots'][plot]['advisor']
                         ]
                     )
-                    print(uncollected)
     return jsonify([tabular_data, uncollected])
 
 
@@ -705,7 +701,6 @@ def receipt():
         with open('data.json', "r") as f:
             json_data = json.load(f)
         form_data = dict(request.form)
-        print(form_data)
         for x in form_data:
             if not form_data[x]:
                 if form_data["mode"] != "cheque" and (x=="bank" or x=="cheque_no"):
