@@ -110,7 +110,6 @@ def favicon():
 @app.before_request
 def before_request():
     # if the request is from the login page, don't check the session
-    print(request.endpoint)
     if request.endpoint in ['login', 'static', 'favicon', 'favicon.ico']:
         return None
     try:
@@ -124,12 +123,13 @@ def before_request():
             return redirect(url_for('login'), code=302)
         
     if 'loggedin' in session:
+        if not session['loggedin']:
+            return redirect(url_for('login'), code=302)
         session['lastused'] = time.time()
 
 
 @app.route('/logout')
 def logout():
-    print("logout")
     session['loggedin'] = False
     session.pop('id', None)
     session.pop('username', None)
