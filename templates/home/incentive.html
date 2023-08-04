@@ -87,7 +87,7 @@
                         // reciept date is i[4]
                         // reciept ammount is i[5]
                         let total_incentive = 0;
-
+                        let total_reciept_amount = 0;
                         // table head, Plot, Advsior, Date of Reciept, Reciept Ammount, Incentive
                         var row = document.createElement("tr");
                         var plot_name_cell = document.createElement("th");
@@ -115,7 +115,6 @@
                         row.appendChild(customer_name_cell);
                         row.appendChild(incentive_cell);
                         table.appendChild(row);
-
                         for(let i=0; i< data[0].length; i++) {
                             /*
                             [
@@ -137,7 +136,7 @@
                             var reciept_ammount = data[0][i][7];      
                             var incentive = data[0][i][8];
                             var incentive_percent = data[0][i][9];    
-
+                            total_reciept_amount += reciept_ammount;
                             total_incentive += incentive;
                             // series should be in the same order as the table head
                             // plot, reciept number, reciept date, reciept ammount, advisor, incentive
@@ -154,7 +153,7 @@
                             reciept_number_cell.innerHTML = reciept_no;
                             advisor_name_cell.innerHTML = advisor_name;
                             reciept_date_cell.innerHTML = reciept_date;
-                            reciept_ammount_cell.innerHTML = reciept_ammount;
+                            reciept_ammount_cell.innerHTML = `₹ ${reciept_ammount}`;
                             customer_name_cell.innerHTML = customer_name;
                             incentive_cell.innerHTML = `₹ ${reciept_ammount} X ${incentive_percent}% = ₹ ${incentive}`;
 
@@ -171,12 +170,24 @@
                         var row = document.createElement("tr");
                         var total_incentive_cell = document.createElement("td");
                         total_incentive_cell.innerHTML = `₹ ${total_incentive}`;
+                        // add 6 empty td
+                        row.appendChild(document.createElement("td"));
+                        row.appendChild(document.createElement("td"));
+                        row.appendChild(document.createElement("td"));
+
+                        var total_reciept_amount_cell = document.createElement("td");
+                        total_reciept_amount_cell.innerHTML = `₹ ${total_reciept_amount}`;
+                        row.appendChild(total_reciept_amount_cell);
+                        row.appendChild(document.createElement("td"));
+                        row.appendChild(document.createElement("td"));
+
                         row.appendChild(total_incentive_cell);
                         table.appendChild(row);
                         // set table text color to green
                         table.style.color = 'green';
 
                         total_incentive = 0;
+                        total_reciept_amount = 0;
 
                         var table = document.getElementById("uncollected");
                         table.setHTML('');
@@ -226,6 +237,7 @@
                             var incentive_percent = data[1][i][8];
 
                             total_incentive += incentive;
+                            total_reciept_amount += reciept_ammount;
 
                             // series should be in the same order as the table head
                             // plot, reciept date, reciept ammount, advisor, incentive
@@ -240,7 +252,7 @@
 
                             plot_name_cell.innerHTML = plot_name;
                             reciept_date_cell.innerHTML = reciept_date;
-                            reciept_ammount_cell.innerHTML = reciept_ammount;
+                            reciept_ammount_cell.innerHTML = `₹ ${reciept_ammount}`;
                             advisor_name_cell.innerHTML = advisor_name;
                             customer_name_cell.innerHTML = customer_name;
                             incentive_cell.innerHTML = `₹ ${reciept_ammount} X ${incentive_percent}% = ₹ ${incentive}`;
@@ -256,6 +268,18 @@
                         var row = document.createElement("tr");
                         var total_incentive_cell = document.createElement("td");
                         total_incentive_cell.innerHTML = `₹ ${total_incentive}`;
+                        // add 2 empty td
+                        row.appendChild(document.createElement("td"));
+                        row.appendChild(document.createElement("td"));
+
+                        var total_reciept_amount_cell = document.createElement("td");
+                        total_reciept_amount_cell.innerHTML = `₹ ${total_reciept_amount}`;
+                        row.appendChild(total_reciept_amount_cell);
+
+                        // add 2 empty td
+                        row.appendChild(document.createElement("td"));
+                        row.appendChild(document.createElement("td"));
+
                         row.appendChild(total_incentive_cell);
                         table.appendChild(row);
                         table.style.color = 'red';
