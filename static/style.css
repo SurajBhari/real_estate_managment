@@ -206,8 +206,9 @@ body.loggedin {
 	background-color: #f3f4f7;
 }
 .content {
-	width: 1000px;
-	margin: 0px auto;
+	margin: auto; 
+	width: 90%; 
+	padding: 10px;
 }
 .content h2 {
 	margin: 0;
