@@ -1,6 +1,8 @@
 import json
 import random
 import datetime
+from faker import Faker
+fake = Faker() 
 
 projects = ["Monarch Residency", "Aashiyana", "Eden Garden"]
 sectors = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -67,15 +69,15 @@ for project in projects:
                 "booking_amount": random.randint(100000, 200000),
                 "incentive": random.randint(5,15),
                 "customer":{
-                    "name": "John Doe",
-                    "phone": "1234567890",
-                    "address": "123, ABC Street, XYZ City"
+                    "name": fake.name(),
+                    "phone": fake.phone_number(),
+                    "address": fake.address(),
                 },
                 "status": status,
                 "is_emi": is_emi,
                 "emi": emi_details,
                 "reciept_entry": reciept_entry,
-                "advisor": random.choice(["John Doe", "Jane Doe", "John Smith", "Jane Smith"]),
+                "advisor": fake.name(),
                 "date": f"{date}",
                 "files": []
             }
