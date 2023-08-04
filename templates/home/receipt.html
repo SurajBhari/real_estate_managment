@@ -140,7 +140,7 @@
                 let remaining_amount = plot['deal_price'] - total_reciept;
                 let plotno= `${selectedProperty}-${selectedSector}-${selectedPlot}`
                 plotDetails.textContent = `Receipt Total: ${total_reciept} \nRemaining Amount: ${remaining_amount}\nPlot No: ${plotno} \nArea: ${plot['size']} \nRate: ${plot['rate']} \nDeal Price: ${plot['deal_price']}`;
-
+                plotDetails.textContent = plotDetails.textContent + `\nBooking Amount: ${plot['booking_amount']}`
                 decideVisibility();
 
             })
