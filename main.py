@@ -712,18 +712,6 @@ def receipt():
                 if form_data["mode"] != "cheque" and (x=="bank" or x=="cheque_no"):
                     continue
                 return f"Please fill all the fields Missing Field: {x}"
-        """
-        {
-            "date": "01/01/2020",
-            "amount": 1902,
-            "mode": "cheque",
-            "is_cheque": true,
-            "cheque": {
-                "bank": "HDFC",
-                "cheque_no": "123456"
-            }
-        }
-        """
         data = {
             "mode": form_data["mode"],
             "date": form_data["receiptDate"],
