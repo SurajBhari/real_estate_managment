@@ -1,0 +1,160 @@
+{% extends 'home/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<h2>Receipt</h2>
+
+
+<!-- 3 drop down to select project, sector, -->
+<form id="reciept_options" enctype="multipart/form-data" action="{{ url_for('receipt') }}" method="post">
+    <select id="project" name="project" onchange="doMagic()">
+        <option value="0">Select Project</option>
+        {% for project in projects %}
+        <option value="{{ project }}">{{ project }}</option>
+        {% endfor %}
+    </select>
+    <select id="month" name="month" onchange="doMagic()">
+        <option value="0">Select Month</option>
+        {% for month in months %}
+        <option value="{{ month }}">{{ month }}</option>
+        {% endfor %}
+    </select>
+</form>
+
+
+
+<table id="data" name="data"></table>
+<table id="uncollected" name="uncollected"></table>
+
+<script>
+    function doMagic(){
+        const project_element = document.getElementById("project"); 
+        const month_element = document.getElementById("month");
+        const project = project_element.options[project_element.selectedIndex].value;
+        const month = month_element.options[month_element.selectedIndex].value;
+        const url = `/get_month_emi/${month}/${project}`;
+        fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    data = JSON.parse(data);
+                    var table = document.getElementById("data");
+                    table.setHTML('');
+                    // table heads  = project-sector-plot, reciept_number, customer_name, date_of_reciept, reciept_ammount, emi_ammount, advisor
+                    var row = document.createElement("tr");
+                    var cell = document.createElement("th");
+                    cell.innerHTML = "Project-Sector-Plot";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Reciept Number";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Customer Name";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Date of Reciept";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Reciept Ammount";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "EMI Ammount";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Advisor";
+                    row.appendChild(cell);
+                    table.appendChild(row);
+                    // table data
+                    console.log(data[0]);
+                    console.log(data[1]);
+                    for(let i=0; i<data[0].length; i++){
+                        let elem = data[0][i];
+                        if(project_element.value != '0'){
+                            if(project_element.value != elem[0]){
+                                continue;
+                            }
+                        }
+                        row = document.createElement("tr");
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[0]+"-"+elem[1]+"-"+elem[2];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[3];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[4];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[5];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[6];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[7];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[8];
+                        row.appendChild(cell);
+                        table.appendChild(row);
+                    }
+                    table.style.color = "green";
+                    // uncollected emi
+                    table = document.getElementById("uncollected");
+                    table.setHTML('');
+                    table.style.color = "red";
+                    // headds are project-sector-plot, customer_name, date_of_emi, kisht, emi_ammount, advisor
+                    row = document.createElement("tr");
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Project-Sector-Plot";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Customer Name";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Date of EMI";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Kisht";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "EMI Ammount";
+                    row.appendChild(cell);
+                    cell = document.createElement("th");
+                    cell.innerHTML = "Advisor";
+                    row.appendChild(cell);
+                    table.appendChild(row);
+                    for(let i=0; i<data[1].length; i++){
+                        let elem = data[1][i];
+                        if(project_element.value != '0'){
+                            if(project_element.value != elem[0]){
+                                continue;
+                            }
+                        }
+                        row = document.createElement("tr");
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[0]+"-"+elem[1]+"-"+elem[2];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[3];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[4];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[5];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[6];
+                        row.appendChild(cell);
+                        cell = document.createElement("td");
+                        cell.innerHTML = elem[7];
+                        row.appendChild(cell);
+                        table.appendChild(row);
+                    }
+                })
+                .catch(error => console.error('Error fetching data from the backend:', error));            
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+    {% extends 'home/layout.html' %}
+
+    {% block title %} {{ title }} {% endblock %}
+
+    {% block content %}
+    <h1>Search</h1>
+    <form>
+        <label for="property">Select Property:</label>
+        <select id="property" onchange="populateSectors()">
+            <option value="">Select Property</option>
+            {% for property_name in data.keys() %}
+                <option value="{{ property_name }}">{{ property_name }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="sector">Select Sector:</label>
+        <select id="sector" onchange="populatePlots()">
+            <option value="">Select Sector</option>
+        </select>
+
+        <label for="plot">Select Plot:</label>
+        <select id="plot" onchange="getBackendData()">
+            <option value="">Select Plot</option>
+        </select>
+    </form>
+    <pre id="backendData" style="white-space: pre-wrap;">
+        <!-- Backend data will be displayed here -->
+    </pre>
+
+    <h2> Raw Data </h2>
+    <table>
+        <tr>
+            <th>Plot</th>
+            <th>Advisor</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>EMI</th>
+            <th>Month</th>
+            <th>Size</th>
+            <th>Rate</th>
+            <th>Price</th>
+            <th>Files</th>
+        </tr>
+        <tr>
+            <td>
+                <select id="plots" name="plots" onchange="updateTable()">
+                    <option value="">Select Plot</option>
+                    {% for plot in plot_identifications %}
+                        <option value="{{ plot }}">{{ plot }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <select id="advisors" name="advisors" onchange="updateTable()">
+                    <option value="">Select Advisor</option>
+                    {% for advisor in unique_advisors %}
+                        <option value="{{ advisor }}">{{ advisor }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <select id="customers_name" name="customers_name" onchange="updateTable()">
+                    <option value="">Select Customer</option>
+                    {% for customer in unique_customer_names %}
+                        <option value="{{ customer }}">{{ customer }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <!--unique_status-->
+                <select id="status" name="status" onchange="updateTable()">
+                    <option value="">Select Status</option>
+                    {% for status in unique_status %}
+                        <option value="{{ status }}">{{ status }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <!--unique_emi-->
+                <select id="emi" name="emi" onchange="updateTable()">
+                    <option value="">Select EMI</option>
+                    {% for emi in unique_emi %}
+                        <option value="{{ emi }}">{{ emi }}</option>
+                        
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <select id="months" name="months" onchange="updateTable()">
+                    <option value="">Select Month</option>
+                    {% for month in unique_months %}
+                        <option value="{{ month }}">{{ month }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <!--unique_size-->
+                <select id="size" name="size" onchange="updateTable()">
+                    <option value="">Select Size</option>
+                    {% for size in unique_size %}
+                        <option value="{{ size }}">{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <!--unique_rate-->
+                <select id="rate" name="rate" onchange="updateTable()">
+                    <option value="">Select Rate</option>
+                    {% for rate in unique_rate %}
+                        <option value="{{ rate }}">{{ rate }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+                <!--unique_price-->
+                <select id="price" name="price" onchange="updateTable()">
+                    <option value="">Select Price</option>
+                    {% for price in unique_price %}
+                        <option value="{{ price }}">{{ price }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        {% for row in tabular_data %}
+            <tr>
+                {% for cell in row[:-1]%}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+                <!-- last row is files. for each file add a href in a line pdf/filename-->
+                {% for file in row[-1] %}
+                    <td><a href="pdf/{{ file }}">{{ file }}</a></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <script>
+        function updateTable(){
+            let tabular_data = {{ tabular_data|tojson }};
+            const plotsDropdown = document.getElementById('plots');
+            const selectedPlot = plotsDropdown.value;
+            const advisorsDropdown = document.getElementById('advisors');
+            const selectedAdvisor = advisorsDropdown.value;
+            const monthsDropdown = document.getElementById('months');
+            const selectedMonth = monthsDropdown.value;
+            const customersDropdown = document.getElementById('customers_name');
+            const selectedCustomer = customersDropdown.value;
+            const statusDropdown = document.getElementById('status');
+            const selectedStatus = statusDropdown.value;
+            const emiDropdown = document.getElementById('emi');
+            const selectedEmi = emiDropdown.value;
+            const sizeDropdown = document.getElementById('size');
+            const selectedSize = sizeDropdown.value;
+            const rateDropdown = document.getElementById('rate');
+            const selectedRate = rateDropdown.value;
+            const priceDropdown = document.getElementById('price');
+            const selectedPrice = priceDropdown.value;
+            
+            if (selectedPlot){
+                tabular_data = tabular_data.filter(row => row[0] === selectedPlot);
+            }
+            // case insensitive
+            if (selectedAdvisor){
+                tabular_data = tabular_data.filter(row => row[1].toLowerCase() === selectedAdvisor.toLowerCase());
+            }
+            if (selectedCustomer){
+                tabular_data = tabular_data.filter(row => row[2].toLowerCase() === selectedCustomer.toLowerCase());
+            }
+            // case insensitive
+            if (selectedStatus){
+                tabular_data = tabular_data.filter(row => row[3].toLowerCase() === selectedStatus.toLowerCase());
+            }
+            // case insensitive
+            if (selectedEmi){
+                tabular_data = tabular_data.filter(row => row[4].toLowerCase() === selectedEmi.toLowerCase());
+            }
+            // starts with that month
+            if (selectedMonth){
+                tabular_data = tabular_data.filter(row => row[5].startsWith(selectedMonth));
+            }
+            if (selectedSize){
+                // if both element of row[6] is in selectedSize
+                tabular_data = tabular_data.filter(row => selectedSize.includes(row[6][0]) && selectedSize.includes(row[6][1]));
+            }
+            if (selectedRate){
+                tabular_data = tabular_data.filter(row => row[7] == selectedRate);
+            }
+            if (selectedPrice){
+                tabular_data = tabular_data.filter(row => row[8] == selectedPrice);
+            }
+
+            const table = document.querySelector('table');
+            const tbody = table.querySelector('tbody');
+            const trows = tbody.querySelectorAll('tr');
+            // conserve first 2 rows
+            for (let i = 2; i < trows.length; i++) {
+                tbody.removeChild(trows[i]);
+            }
+            for (const row of tabular_data) {
+                const tr = document.createElement('tr');
+                // append till last element
+                for (let i = 0; i < row.length - 1; i++) {
+                    const td = document.createElement('td');
+                    td.textContent = row[i];
+                    tr.appendChild(td);
+                }
+                // last element is files
+                for (const file of row[row.length - 1]) {
+                    const td = document.createElement('td');
+                    const a = document.createElement('a');
+                    a.href = `pdf/${file}`;
+                    a.textContent = file;
+                    td.appendChild(a);
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+
+        }
+        function getMonthlySales(){
+            const monthlyDropdown = document.getElementById('monthly_sales');
+            const selectedMonth = monthlyDropdown.value;
+            const url = `/get_month_sale/${selectedMonth}`;
+
+            // Perform AJAX request to get data from the backend
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const backendDataDiv = document.getElementById('backendData');
+                    backendDataDiv.textContent = data.toString();
+                })
+                .catch(error => console.error('Error fetching data from the backend:', error));
+        }
+        function getAdvisorProjects(){
+            const advisorDropdown = document.getElementById('advisor');
+            const selectedAdvisor = advisorDropdown.value;
+            const url = `/get_advisor_projects/${selectedAdvisor}`;
+
+            // Perform AJAX request to get data from the backend
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    const backendDataDiv = document.getElementById('backendData');
+                    backendDataDiv.textContent = data.toString();
+                })
+                .catch(error => console.error('Error fetching data from the backend:', error));
+        }
+        function populateSectors() {
+            let data = {{ data|tojson }};
+            const propertyDropdown = document.getElementById('property');
+            const sectorDropdown = document.getElementById('sector');
+            const selectedProperty = propertyDropdown.value;
+
+            sectorDropdown.innerHTML = '<option value="">Select Sector</option>';
+
+            if (selectedProperty) {
+                const sectors = data[selectedProperty].sectors;
+                for (const sector in sectors) {
+                    const option = document.createElement('option');
+                    option.value = sector;
+                    option.textContent = sector;
+                    sectorDropdown.appendChild(option);
+                }
+            }
+        }
+
+        function populatePlots() {
+            let data = {{ data|tojson }};
+            const propertyDropdown = document.getElementById('property');
+            const sectorDropdown = document.getElementById('sector');
+            const plotDropdown = document.getElementById('plot');
+            const selectedProperty = propertyDropdown.value;
+            const selectedSector = sectorDropdown.value;
+
+            plotDropdown.innerHTML = '<option value="">Select Plot</option>';
+
+            if (selectedProperty && selectedSector) {
+                const plots = data[selectedProperty].sectors[selectedSector].plots;
+                for (const plot in plots) {
+                    const option = document.createElement('option');
+                    option.value = plot;
+                    option.textContent = plot;
+                    plotDropdown.appendChild(option);
+                }
+            }
+        }
+
+        function getBackendData() {
+            const propertyDropdown = document.getElementById('property');
+            const sectorDropdown = document.getElementById('sector');
+            const plotDropdown = document.getElementById('plot');
+            const selectedProperty = propertyDropdown.value;
+            const selectedSector = sectorDropdown.value;
+            const selectedPlot = plotDropdown.value;
+
+            if (selectedProperty && selectedSector && selectedPlot) {
+                const url = `/get_backend_data/${selectedProperty}/${selectedSector}/${selectedPlot}`;
+
+                // Perform AJAX request to get data from the backend
+                fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        const backendDataDiv = document.getElementById('backendData');
+                        backendDataDiv.textContent = data.toString();
+                    })
+                    .catch(error => console.error('Error fetching data from the backend:', error));
+            }
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>
+

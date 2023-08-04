@@ -1,0 +1,187 @@
+{% extends 'home/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<h2>Receipt</h2>
+
+
+<!-- 3 drop down to select project, sector, -->
+<form id="reciept_options" enctype="multipart/form-data" action="{{ url_for('receipt') }}" method="post">
+    <label for="project">Project</label>
+    <select id="project" name="project" value="project" onchange="populateSectors()">Project</option>
+    <option value="">Select Project</option>
+    {% for project in data%}
+        <option value="{{ project }}">{{ project }}</option>
+    {% endfor %}
+    </select>
+    <label for="sector">Sector</label>
+    <select id="sector" name="sector" value="sector" onchange="populatePlots()">Sector</select>
+    <label for="plot">Plot</label>
+    <select id="plot" name="plot" value="plot" onchange="getData()">Plot</select>
+    <table id="receipts"></table>
+</br></br></br></br></br></br></br></br></br></br>
+    <div id="reciept_entry">
+        <h2> Make a new reciept entry </h2>
+        <input type="date" id="receiptDate" name="receiptDate" min="2015-01-01" max="2028-12-31"> </br>
+        <label for="number">Receipt Number</label> </br>
+        <input type="number" id="receiptnumber" name="receiptnumber" min="0" max="10000000"> </br>
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" name="amount" min="0" max="10000000"> 
+        <label for="mode">Mode</label>
+        <select id="mode" name="mode" value="mode" onchange="decideVisibility()">
+            {% for x in available_payment_method%}
+                <option value="{{ x }}">{{ x }}</option>
+            {% endfor %}
+        </select>
+        <div id="cheque_details">
+            <label for="cheque_no" id="cheque_no_label">Cheque No</label>
+            <input type="number" id="cheque_no" name="cheque_no" min="0" max="10000000"> </br>
+            <label for="bank" id="bank_label">Bank</label>
+            <input type="text" id="bank" name="bank" min="0" max="10000000"> </br>
+        </div>
+        <input type="submit" value="Submit">
+    </div>
+</form>
+
+<script>
+    const reciept_entry = document.getElementById('reciept_entry');
+    reciept_entry.style.display = 'none';
+    const cheque_details = document.getElementById('cheque_details');
+    const isCheque = document.getElementById('mode');
+    cheque_details.style.display = 'none';
+    function decideVisibility() {
+        const cheque_details = document.getElementById('cheque_details');
+        if (isCheque.value == 'cheque') {
+            cheque_details.style.display = 'block';
+        } else {
+            cheque_details.style.display = 'none';
+        }
+    }
+    function getData(){
+        const reciept_entry = document.getElementById('reciept_entry');
+        reciept_entry.style.display = 'block';
+        const propertyDropdown = document.getElementById('project');
+        const sectorDropdown = document.getElementById('sector');
+        const plotDropdown = document.getElementById('plot');
+        const selectedProperty = propertyDropdown.value;
+        const selectedSector = sectorDropdown.value;
+        const selectedPlot = plotDropdown.value;
+        const table = document.getElementById('receipts');
+        const url = `/get_backend_data/${selectedProperty}/${selectedSector}/${selectedPlot}`;
+
+        if (selectedProperty && selectedSector && selectedPlot) {
+        // Making an AJAX request to the server to get data
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const plot = data;
+                table.setHTML('')
+                // Date Receipt number Amount Mode Bank Cheque No
+                // make the headings
+                const headingRow = document.createElement('tr');
+                const dateHeading = document.createElement('th');
+                const receipt_numberHeading = document.createElement('th');
+                const amountHeading = document.createElement('th');
+                const modeHeading = document.createElement('th');
+                const chequeHeading = document.createElement('th');
+                const bankHeading = document.createElement('th');
+                const chequeNoHeading = document.createElement('th');
+
+                dateHeading.textContent = 'Date';
+                receipt_numberHeading.textContent = 'Receipt Number';
+                amountHeading.textContent = 'Amount';
+                modeHeading.textContent = 'Mode';
+                bankHeading.textContent = 'Bank';
+                chequeNoHeading.textContent = 'Cheque No';
+
+
+                headingRow.appendChild(dateHeading);
+                headingRow.appendChild(receipt_numberHeading);
+                headingRow.appendChild(amountHeading);
+                headingRow.appendChild(modeHeading);
+                headingRow.appendChild(bankHeading);
+                headingRow.appendChild(chequeNoHeading);
+
+                table.appendChild(headingRow);
+
+                for (const key in plot['reciept_entry']) {
+                    const row = document.createElement('tr');
+                    const date = document.createElement('td');
+                    const receipt_number = document.createElement('td');
+                    const amount = document.createElement('td');
+                    const mode = document.createElement('td');
+                    const isCheque = document.createElement('td');
+
+                    date.textContent = plot['reciept_entry'][key]['date'];
+                    amount.textContent = plot['reciept_entry'][key]['amount'];
+                    mode.textContent = plot['reciept_entry'][key]['mode'];
+                    console.log(plot)
+                    receipt_number.textContent = plot['reciept_entry'][key]['reciept_number'];
+
+                    row.appendChild(date);
+                    row.appendChild(receipt_number)
+                    row.appendChild(amount);
+                    row.appendChild(mode);
+                    table.appendChild(row);
+                    if (plot['reciept_entry'][key]['is_cheque']) {
+                        const cheque = document.createElement('td');
+                        const bank = document.createElement('td');
+                        const chequeNo = document.createElement('td');
+                        bank.textContent = plot['reciept_entry'][key]['cheque']['bank'];
+                        chequeNo.textContent = plot['reciept_entry'][key]['cheque']['cheque_no'];
+                        row.appendChild(bank);
+                        row.appendChild(chequeNo);
+                    }
+                }
+                decideVisibility();
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+    }
+
+
+    function populateSectors() {
+        let data = {{ data|tojson }};
+        var project = document.getElementById("project");
+        var sectorDropdown = document.getElementById("sector");
+        sectorDropdown.innerHTML = '<option value="">Select Sector</option>';
+        var plot = document.getElementById("plot");
+        var projectValue = project.value;
+        if (projectValue) {
+            const sectors = data[projectValue].sectors;
+            for (const sector in sectors) {
+                const option = document.createElement('option');
+                option.value = sector;
+                option.textContent = sector;
+                sectorDropdown.appendChild(option);
+            }
+        }   
+    }
+
+    function populatePlots() {
+        let data = {{ data | tojson }};
+        const propertyDropdown = document.getElementById('project');
+        const sectorDropdown = document.getElementById('sector');
+        const plotDropdown = document.getElementById('plot');
+        const selectedProperty = propertyDropdown.value;
+        const selectedSector = sectorDropdown.value;
+
+        plotDropdown.innerHTML = '<option value="">Select Plot</option>';
+
+        if (selectedProperty && selectedSector) {
+            const plots = data[selectedProperty].sectors[selectedSector].plots;
+            for (const plot in plots) {
+                const option = document.createElement('option');
+                option.value = plot;
+                option.textContent = plot;
+                plotDropdown.appendChild(option);
+            }
+        }
+    }
+</script>
+
+{% endblock %}

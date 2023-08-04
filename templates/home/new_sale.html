@@ -1,0 +1,228 @@
+{% extends 'home/layout.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+<h2>New Sale</h2>
+
+
+<!-- 3 drop down to select project, sector, -->
+<form id="sale_options" enctype="multipart/form-data" action="{{ url_for('new_sale') }}" method="post">
+    <label for="project">Select Project:</label>
+    <select id="project" name="project" onchange="populateSectors()">
+        <option value="">Select Property</option>
+        {% for project_name in data.keys() %}
+            <option value="{{ project_name }}">{{ project_name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="sector">Select Sector:</label>
+    <select id="sector" onchange="populatePlots()" name="sector">
+        <option value="">Select Sector</option>
+    </select>
+
+    <label>Select Plot:</label>
+    <select id="plot" name="plot" onchange="fillForm()">
+        <option value="">Select Plot</option>
+    </select> </br></br>
+    <select id="status" name="status">
+        <option value="">Select Status</option>
+        {% for status in available_status %}
+            <option value="{{ status }}">{{ status }}</option> 
+        {% endfor %}
+    </select> </br>
+    <label >Size:</label></br>
+    <input type="number" id="size_width" name="size_width" placeholder="Size(width)"> </br>
+    <input type="number" id="size_length" name="size_length" placeholder="Size(length)"> </br> </br>
+    <label>Pricing Details:</label></br>
+    <input type="number" id="rate" name="rate" placeholder="Rate"> </br>
+    <input type="number" id="price" name="price" placeholder="Price"> </br>
+    <input type="number" id="deal_price" name="deal_price" placeholder="Deal Price"> </br>
+    <input type="number" id="booking_amount" name="booking_amount" placeholder="Booking Amount"> </br></br> 
+    <label>Customer Details:</label></br>
+    <input type="text" id="customer_name" name="customer_name" placeholder="Customer Name"> </br>
+    <input type="number" id="customer_phone" name="customer_phone" placeholder="Customer Phone"> </br>
+    <input type="text" id="customer_address" name="customer_address" placeholder="Customer Address"> </br> </br> 
+    
+    <select id="advisor" name="advisor">
+        <option value="">Select Advisor</option>
+        {% for advisor in advisors %}
+            <option value="{{ advisor }}">{{ advisor }}</option>
+        {% endfor %}
+    </select> 
+    <input type="text" id="newadvisor" name="newadvisor" placeholder="New Advisor"> </br>
+    <input type="number" id="incentive" name="incentive" placeholder="Incentive"> </br>
+</br> </br> 
+    
+    <label>EMI Details:</label></br> 
+    <!--checkbox for emi-->
+    <label>EMI:</label>
+    <input type="checkbox" id="emi" name="emi" onchange="decideVisibilityemi()" value="is Emi ?">
+</br> </br>
+    <div id="emi_details">
+        <input type="text" id="emi_amount" name="emi_amount" placeholder="EMI Amount"> </br>
+        <label id= "emi_start_lbl">EMI Start Date:</label> </br>
+        <input type="date" id="emi_start_date" name="emi_start_date" min="2018-01-01" max="2028-12-31"> </br>
+        <label id= "emi_end_lbl"> EMI End Date:</label> </br>
+        <input type="date" id="emi_end_date" name="emi_end_date" min="2018-01-01" max="2028-12-31"> </br> </br> 
+        <input type="text" id="emi_duration" name="emi_duration" placeholder="EMI Duration in months"> </br></br> </br> 
+    </div>
+    <!-- Placeholder with current date in DD/MM/YYYY format-->
+    <label>Date:</label> </br>
+    <input type="date" id="date" name="date" min="2018-01-01" max="2028-12-31"></br> </br> 
+    <input type="file" name="upload" accept="application/pdf" multiple /> </br> </br>
+    <p id="files">
+        <strong>Files:</strong>
+    </p>
+
+    <input type="submit" value="Submit"> </br>
+</form>
+<script>
+    hideEmiFields();
+    function decideVisibilityemi(){
+        const emiCheckbox = document.getElementById('emi');
+        if (emiCheckbox.checked) {
+            showEmiFields();
+        }
+        else{
+            hideEmiFields();
+        }
+    }
+    function populateSectors() {
+        let data = {{ data | tojson }};
+        const propertyDropdown = document.getElementById('project');
+        const sectorDropdown = document.getElementById('sector');
+        const selectedProperty = propertyDropdown.value;
+
+        sectorDropdown.innerHTML = '<option value="">Select Sector</option>';
+
+        if (selectedProperty) {
+            const sectors = data[selectedProperty].sectors;
+            for (const sector in sectors) {
+                const option = document.createElement('option');
+                option.value = sector;
+                option.textContent = sector;
+                sectorDropdown.appendChild(option);
+            }
+        }
+    }
+
+    function populatePlots() {
+        let data = {{ data | tojson }};
+        const propertyDropdown = document.getElementById('project');
+        const sectorDropdown = document.getElementById('sector');
+        const plotDropdown = document.getElementById('plot');
+        const selectedProperty = propertyDropdown.value;
+        const selectedSector = sectorDropdown.value;
+
+        plotDropdown.innerHTML = '<option value="">Select Plot</option>';
+
+        if (selectedProperty && selectedSector) {
+            const plots = data[selectedProperty].sectors[selectedSector].plots;
+            for (const plot in plots) {
+                const option = document.createElement('option');
+                option.value = plot;
+                option.textContent = plot;
+                plotDropdown.appendChild(option);
+            }
+        }
+    }
+    function hideEmiFields(){
+        document.getElementById("emi_details").style.display = 'none';
+    }
+    function showEmiFields(){
+        document.getElementById("emi_details").style.display = 'block';
+    }
+    function fillForm() {
+        const propertyDropdown = document.getElementById('project');
+        const sectorDropdown = document.getElementById('sector');
+        const plotDropdown = document.getElementById('plot');
+        const selectedProperty = propertyDropdown.value;
+        const selectedSector = sectorDropdown.value;
+        const selectedPlot = plotDropdown.value;
+        // get data from /get_backend_data/<project>/<sector>/<plot>
+        // fill form with data
+        const url = `/get_backend_data/${selectedProperty}/${selectedSector}/${selectedPlot}`;
+
+
+        if (selectedProperty && selectedSector && selectedPlot) {
+        // Making an AJAX request to the server to get data
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const plot = data;
+                // plot = data[selectedProperty].sectors[selectedSector].plots[selectedPlot];
+                // if plot.status.toLowercase() in ['available', 'not for sale', 'held'] then clear all the field and return
+                if (['available', 'not for sale', 'held'].includes(plot.status.toLowerCase())) {
+                    document.getElementById('size_width').value = '';
+                    document.getElementById('size_length').value = '';
+                    document.getElementById('rate').value = '';
+                    document.getElementById('price').value = '';
+                    document.getElementById('deal_price').value = '';
+                    document.getElementById('booking_amount').value = '';
+                    document.getElementById('customer_name').value = '';
+                    document.getElementById('customer_phone').value = '';
+                    document.getElementById('customer_address').value = '';
+                    document.getElementById('emi_amount').value = '';
+                    document.getElementById('date').value = '';
+                    document.getElementById('status').value = plot.status;
+                    document.getElementById('advisor').value = '';
+                    document.getElementById('emi').value = '';
+                    document.getElementById('emi_start_date').value = '';
+                    document.getElementById('emi_end_date').value = '';
+                    document.getElementById('emi_duration').value = '';
+                    document.getElementById('incentive').value = '';
+                    document.getElementById('files').innerHTML = '<strong>Files:</strong>';
+                    return;
+                }
+                console.log(plot)
+                document.getElementById('size_width').value = plot.size[0];
+                document.getElementById('size_length').value = plot.size[1];
+                document.getElementById('rate').value = plot.rate;
+                document.getElementById('price').value = plot.price;
+                document.getElementById('deal_price').value = plot.deal_price;
+                document.getElementById('booking_amount').value = plot.booking_amount;
+                document.getElementById('customer_name').value = plot.customer.name;
+                document.getElementById('customer_phone').value = plot.customer.phone;
+                document.getElementById('customer_address').value = plot.customer.address;
+                document.getElementById('emi_amount').value = plot.emi.amount;
+                document.getElementById('date').value = plot.date;
+                document.getElementById('status').value = plot.status;
+                document.getElementById('advisor').value = plot.advisor;
+                document.getElementById('incentive').value = plot.incentive;
+                if (plot.is_emi) {
+                    document.getElementById('emi').checked = plot.is_emi;
+                    document.getElementById('emi_start_date').value = plot.emi.start_date;
+                    document.getElementById('emi_end_date').value = plot.emi.end_date;
+                    document.getElementById('emi_duration').value = plot.emi.months;
+                    document.getElementById('emi_amount').value = plot.emi.amount;
+                    console.log(plot)
+                    document.getElementById('')
+                } else {
+                    document.getElementById('emi').value = plot.is_emi;
+                    document.getElementById('emi_start_date').value = '';
+                    document.getElementById('emi_end_date').value = '';
+                    document.getElementById('emi_duration').value = '';
+                    document.getElementById('emi_amount').value = '';
+                }
+                document.getElementById('files').innerHTML = '<strong>Files:</strong>';
+                for (const file of plot.files) {
+                    const p = document.createElement('p');
+                    // Creating a link (a href) to the PDF/file
+                    const a = document.createElement('a');
+                    a.href = file;
+                    const fileName = file.split('/').pop();
+                    a.textContent = fileName;
+                    p.appendChild(a);
+                    document.getElementById('files').appendChild(p);
+                }
+                decideVisibilityemi();
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+    }
+</script>
+
+{% endblock %}

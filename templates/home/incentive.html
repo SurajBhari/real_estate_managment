@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search</title>
+</head>
+<body>
+    {% extends 'home/layout.html' %}
+
+    {% block title %} {{ title }} {% endblock %}
+
+    {% block content %}
+    <h1>Search</h1>
+    <form>
+        <label for="advisors">Select Advisor:</label>
+        <select id="advisors" onchange="doMagic()">
+            <option value="">Select Advisor</option>
+            {% for advisor in advisors %}
+                <option value="{{ advisor }}">{{ advisor }}</option>
+            {% endfor %}
+        </select>
+        <label for="months">Select Months:</label>
+        <select id="months" onchange="doMagic()">
+            <option value="">Select Month</option>
+            {% for month in months %}
+                <option value="{{ month }}">{{ month }}</option>
+            {% endfor %}
+        </select>
+        <!-- a button to download selecetd month incentive for all advisor-->
+        <button id="download"><a href="/download">Download </a></button>
+    </form>
+    <h1>Collected</h1>
+    <table id="data" name="data">
+        <tr>
+            <th>Plot Name</th>
+            <th>Advisor Name</th>
+            <th>Reciept Date</th>
+            <th>Reciept Ammount</th>
+        </tr>
+    </table>
+    <h1>Uncollected</h1>
+    <table id="uncollected" name="uncollected">
+        <tr>
+            <th>Plot Name</th>
+            <th>Advisor Name</th>
+            <th>Reciept Date</th>
+            <th>Reciept Ammount</th>
+        </tr>
+    </table>
+    <script>
+        function doMagic(){
+            var advisor = document.getElementById("advisors").value;
+            var month = document.getElementById("months").value;
+            var download_button = document.getElementById("download");
+            // 4 cases 
+            // month and advisor is none
+            // there is month but not advisor
+            // there is advisor but not month
+            // there is both
+            
+            var url = `/download/`
+            if(month!='' && advisor == ''){
+                url = `/download/${month}`
+            }
+            else if(month=='' && advisor != ''){
+                url = `/download/${advisor}`
+            }
+            else if(month!='' && advisor != ''){
+                url = `/download/${month}/${advisor}`
+            }
+            var download_url = url;
+            download_button.setHTML(`<a href="${download_url}">Download</a>`);
+            // if there is only one of the both then return
+            url = `/get_incentive/${month}/${advisor}`;
+            // if there is only month then url 
+            if(month!='' && advisor == ''){
+                url = `/get_incentive/${month}`;
+            }
+            fetch(url)
+                    .then(response => response.text())
+                    .then(data => {
+                        data = JSON.parse(data);
+                        var table = document.getElementById("data");
+                        table.setHTML('');
+                        // iterate over data
+                        // plot_name is i[0]-i[1]-i[2]
+                        // advisor is i[3]
+                        // reciept date is i[4]
+                        // reciept ammount is i[5]
+                        let total_incentive = 0;
+
+                        // table head, Plot, Advsior, Date of Reciept, Reciept Ammount, Incentive
+                        var row = document.createElement("tr");
+                        var plot_name_cell = document.createElement("th");
+                        var reciept_number_cell = document.createElement("th");
+                        var advisor_name_cell = document.createElement("th");
+                        var reciept_date_cell = document.createElement("th");
+                        var reciept_ammount_cell = document.createElement("th");
+                        var incentive_cell = document.createElement("th");
+                        var customer_name_cell = document.createElement("th");
+
+                        plot_name_cell.innerHTML = 'Plot';
+                        reciept_number_cell.innerHTML = 'Reciept No.';
+                        reciept_date_cell.innerHTML = 'Date of Reciept';
+                        reciept_ammount_cell.innerHTML = 'Reciept Ammount';
+                        advisor_name_cell.innerHTML = 'Advisor';
+                        customer_name_cell.innerHTML = 'Customer';
+
+                        incentive_cell.innerHTML = 'Incentive';
+
+                        row.appendChild(plot_name_cell);
+                        row.appendChild(reciept_number_cell);
+                        row.appendChild(reciept_date_cell);
+                        row.appendChild(reciept_ammount_cell);
+                        row.appendChild(advisor_name_cell);
+                        row.appendChild(customer_name_cell);
+                        row.appendChild(incentive_cell);
+                        table.appendChild(row);
+
+                        for(let i=0; i< data[0].length; i++) {
+                            /*
+                            [
+                            project,
+                            sector,
+                            plot,
+                            reciept_no,
+                            adv,
+                            reciept['date'],
+                            reciept['amount'],
+                            incentive,
+                            incentive_percent
+                            ]*/
+                            var plot_name = data[0][i][0] + '-' + data[0][i][1] + '-' + data[0][i][2];
+                            var reciept_no = data[0][i][3];
+                            var advisor_name = data[0][i][4];
+                            var customer_name = data[0][i][5];
+                            var reciept_date = data[0][i][6];
+                            var reciept_ammount = data[0][i][7];      
+                            var incentive = data[0][i][8];
+                            var incentive_percent = data[0][i][9];    
+
+                            total_incentive += incentive;
+                            // series should be in the same order as the table head
+                            // plot, reciept number, reciept date, reciept ammount, advisor, incentive
+                            var row = document.createElement("tr");
+                            var plot_name_cell = document.createElement("td");
+                            var reciept_number_cell = document.createElement("td");
+                            var advisor_name_cell = document.createElement("td");
+                            var reciept_date_cell = document.createElement("td");
+                            var reciept_ammount_cell = document.createElement("td");
+                            var incentive_cell = document.createElement("td");
+                            var customer_name_cell = document.createElement("td");
+
+                            plot_name_cell.innerHTML = plot_name;
+                            reciept_number_cell.innerHTML = reciept_no;
+                            advisor_name_cell.innerHTML = advisor_name;
+                            reciept_date_cell.innerHTML = reciept_date;
+                            reciept_ammount_cell.innerHTML = reciept_ammount;
+                            customer_name_cell.innerHTML = customer_name;
+                            incentive_cell.innerHTML = `₹ ${reciept_ammount} X ${incentive_percent}% = ₹ ${incentive}`;
+
+                            row.appendChild(plot_name_cell);
+                            row.appendChild(reciept_number_cell);
+                            row.appendChild(reciept_date_cell);
+                            row.appendChild(reciept_ammount_cell);
+                            row.appendChild(advisor_name_cell);
+                            row.appendChild(customer_name_cell);
+                            row.appendChild(incentive_cell);
+                            table.appendChild(row);
+
+                        }
+                        var row = document.createElement("tr");
+                        var total_incentive_cell = document.createElement("td");
+                        total_incentive_cell.innerHTML = `₹ ${total_incentive}`;
+                        row.appendChild(total_incentive_cell);
+                        table.appendChild(row);
+                        // set table text color to green
+                        table.style.color = 'green';
+
+                        total_incentive = 0;
+
+                        var table = document.getElementById("uncollected");
+                        table.setHTML('');
+                        // table head, Plot, Advsior, Date of Reciept, Reciept Ammount, Incentive
+                        var row = document.createElement("tr");
+                        var plot_name_cell = document.createElement("th");
+                        var reciept_number_cell = document.createElement("th");
+                        var advisor_name_cell = document.createElement("th");
+                        var reciept_date_cell = document.createElement("th");
+                        var reciept_ammount_cell = document.createElement("th");
+                        var incentive_cell = document.createElement("th");
+                        var customer_name_cell = document.createElement("th");
+
+                        plot_name_cell.innerHTML = 'Plot';
+                        reciept_date_cell.innerHTML = 'Date of Reciept';
+                        reciept_ammount_cell.innerHTML = 'Kisht Ammount';
+                        advisor_name_cell.innerHTML = 'Advisor';
+                        incentive_cell.innerHTML = 'Incentive';
+                        customer_name_cell.innerHTML = 'Customer';
+                        
+                        row.appendChild(plot_name_cell);
+                        row.appendChild(reciept_date_cell);
+                        row.appendChild(reciept_ammount_cell);
+                        row.appendChild(advisor_name_cell);
+                        row.appendChild(customer_name_cell);
+                        row.appendChild(incentive_cell);
+
+                        table.appendChild(row);
+                        
+                        for(let i=0; i< data[1].length; i++) {
+                            /*[
+                                project,
+                                sector,
+                                plot,
+                                adv,
+                                x.strftime("%Y-%m-%d"),
+                                kisht,
+                                incentive,
+                                incentive_percent
+                                ]*/
+                            var plot_name = data[1][i][0] + '-' + data[1][i][1] + '-' + data[1][i][2];
+                            var advisor_name = data[1][i][3];
+                            var customer_name = data[1][i][4];
+                            var reciept_date = data[1][i][5];
+                            var reciept_ammount = data[1][i][6];
+                            var incentive = data[1][i][7];     
+                            var incentive_percent = data[1][i][8];
+
+                            total_incentive += incentive;
+
+                            // series should be in the same order as the table head
+                            // plot, reciept date, reciept ammount, advisor, incentive
+                            var row = document.createElement("tr");
+
+                            var plot_name_cell = document.createElement("td");
+                            var reciept_date_cell = document.createElement("td");
+                            var reciept_ammount_cell = document.createElement("td");
+                            var advisor_name_cell = document.createElement("td");
+                            var customer_name_cell = document.createElement("td");
+                            var incentive_cell = document.createElement("td");
+
+                            plot_name_cell.innerHTML = plot_name;
+                            reciept_date_cell.innerHTML = reciept_date;
+                            reciept_ammount_cell.innerHTML = reciept_ammount;
+                            advisor_name_cell.innerHTML = advisor_name;
+                            customer_name_cell.innerHTML = customer_name;
+                            incentive_cell.innerHTML = `₹ ${reciept_ammount} X ${incentive_percent}% = ₹ ${incentive}`;
+
+                            row.appendChild(plot_name_cell);
+                            row.appendChild(reciept_date_cell);
+                            row.appendChild(reciept_ammount_cell);
+                            row.appendChild(advisor_name_cell);
+                            row.appendChild(customer_name_cell);
+                            row.appendChild(incentive_cell);
+                            table.appendChild(row);
+                        }
+                        var row = document.createElement("tr");
+                        var total_incentive_cell = document.createElement("td");
+                        total_incentive_cell.innerHTML = `₹ ${total_incentive}`;
+                        row.appendChild(total_incentive_cell);
+                        table.appendChild(row);
+                        table.style.color = 'red';
+                    })
+                    .catch(error => console.error('Error fetching data from the backend:', error));            
+        }
+        doMagic();
+    </script>
+    {% endblock %}
+</body>
+</html>
+
