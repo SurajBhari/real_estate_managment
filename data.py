@@ -10,6 +10,15 @@ sectors = list(sectors)[:5]
 
 data_count = 0
 reciept_numbers = 1
+advisors = [fake.name() for x in range(0, 80)]
+customers = []
+for x in range(80):
+    customers.append({
+        "name": fake.name(),
+        "phone": fake.phone_number(),
+        "address": fake.address(),
+    })
+
 data = {}
 for project in projects:
     data[project] = {}
@@ -19,28 +28,47 @@ for project in projects:
         data[project]['sectors'][sector]['plots'] = {}
 
         for i in range(0, random.randint(51, 100)):
-            date = datetime.datetime(random.randint(2015, 2023), random.randint(1, 12), random.randint(1, 28))
+            date = datetime.date(random.randint(2015, 2023), random.randint(1, 12), random.randint(1, 28))
             # yyyy-MM-dd
-            date = date.strftime("%Y-%m-%d")
-            emi_start_date = datetime.datetime(random.randint(2019, 2020), random.randint(1, 12), random.randint(1, 28))
-            emi_start_date = emi_start_date.strftime("%Y-%m-%d")
-
-            emi_end_date = datetime.datetime(random.randint(2019, 2020), random.randint(1, 12), random.randint(1, 28))
-            emi_end_date = emi_end_date.strftime("%Y-%m-%d")
+            emi_start_date_dt = date
+            emi_end_date_dt = fake.date_between(start_date=emi_start_date_dt, end_date="+5y")
+            emi_start_date = emi_start_date_dt.strftime("%Y-%m-%d")
+            emi_end_date = emi_end_date_dt.strftime("%Y-%m-%d")
 
             #print(date)
             status = random.choice(["agreement", "registered", "booked", "held", "Not for sale", "available"])
             is_emi = random.choice([True, False])
-            
+            size = [random.randint(100, 200), random.randint(100, 200)]
+            rate = random.randint(350, 550)
+            price = rate*size[0]*size[1]
+            deal_price = price
             if is_emi:
-                reciept_entry = []
+                booking_amount = random.randint(0, deal_price)
+                emi_amount = deal_price - booking_amount
+                emi_months = emi_end_date_dt - emi_start_date_dt
+                emi_months = emi_months.days//28
+            else:
+                booking_amount = deal_price
+                emi_amount = 0
+                emi_months = 0
+            
+            reciept_entry = []
+            reciept_entry.append({
+                "reciept_number" : reciept_numbers,
+                "date": date.strftime("%Y-%m-%d"),
+                "amount": booking_amount,
+                "mode": "cash",
+                "is_cheque": False,
+            })
+            reciept_numbers += 1
+
+            if is_emi:
                 for x in range(0, random.randint(1, 4)):
                     mode = random.choice(["cash", "cheque", "BT"])
-                    date = datetime.datetime(random.randint(2019, 2020), random.randint(1, 12), random.randint(1, 28))
-                    date = date.strftime("%Y-%m-%d")
+                    date_ = fake.date_between(start_date=date, end_date=emi_end_date_dt).strftime("%Y-%m-%d")
                     entry = {
                         "reciept_number" : reciept_numbers,
-                        "date": date,
+                        "date": date_,
                         "amount": random.randint(1000, 2000),
                         "mode": mode,
                         "is_cheque": True if mode == "cheque" else False,
@@ -53,8 +81,8 @@ for project in projects:
                         }
                     reciept_entry.append(entry)
                 emi_details = {
-                    "amount": random.randint(1000, 2000),
-                    "months": random.randint(1, 12),
+                    "amount": emi_amount,
+                    "months": emi_months,
                     "start_date": emi_start_date,
                     "end_date": emi_end_date
                 }
@@ -62,22 +90,18 @@ for project in projects:
                 emi_details = {}
                 reciept_entry = []
             plot = {
-                "size": [random.randint(100, 200), random.randint(100, 200)],
-                "rate": random.randint(1000, 2000),
-                "price": random.randint(100000, 200000),
-                "deal_price": random.randint(100000, 200000),
-                "booking_amount": random.randint(100000, 200000),
+                "size": size,
+                "rate": rate,
+                "price": price,
+                "deal_price": deal_price,
+                "booking_amount": booking_amount,
                 "incentive": random.randint(5,15),
-                "customer":{
-                    "name": fake.name(),
-                    "phone": fake.phone_number(),
-                    "address": fake.address(),
-                },
+                "customer": random.choice(customers),
                 "status": status,
                 "is_emi": is_emi,
                 "emi": emi_details,
                 "reciept_entry": reciept_entry,
-                "advisor": fake.name(),
+                "advisor": random.choice(advisors),
                 "date": f"{date}",
                 "files": []
             }
@@ -89,7 +113,6 @@ for project in projects:
                 plot["status"] = status
             data[project]['sectors'][sector]['plots'][i] = plot
             data_count += 1
-
 with open("data.json", "w") as f:
     json.dump(data, f, indent=4)
 
