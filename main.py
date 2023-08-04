@@ -137,10 +137,14 @@ def logout():
 
     return redirect(url_for('login'))
 
-@app.route("/incentive")
-def incentive():
+def get_data():
     with open('data.json', "r") as f:
         data = json.load(f)
+    return data
+
+@app.route("/incentive")
+def incentive():
+    data = get_data()
     tabular_data = []
     unique_months = []
     for project in data:
@@ -164,8 +168,7 @@ def incentive():
 @app.route('/download/<month>')
 @app.route('/download/')
 def download(month=None, radvisor=None):
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     
     workbook = openpyxl.Workbook()
     if month:
@@ -284,8 +287,7 @@ def download(month=None, radvisor=None):
 @app.route("/get_incentive/<month>")
 @app.route("/get_incentive/")
 def get_incentive(month=None, advisor=None):
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     # if there is no number in the month then it is advisor and the month is None
     if month:
         have_number = False
@@ -373,8 +375,7 @@ def get_incentive(month=None, advisor=None):
                         )
     return jsonify([tabular_data, uncollected])
 def _get_unique_months():
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     unique_months = []
     for project in data:
         for sector in data[project]['sectors']:
@@ -387,8 +388,7 @@ def _get_unique_months():
     return unique_months
 @app.route("/search")
 def search():
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     unique_advisors = []
     for project in data:
         for sector in data[project]['sectors']:
@@ -504,15 +504,13 @@ def search():
 
 @app.route("/get_backend_data/<project>/<sector>/<plot>")
 def get_backend_data(project, sector, plot):
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     return jsonify(data[project]['sectors'][sector]['plots'][plot])
 
 @app.route("/get_advisor_projects/<advisor>")
 @app.route("/get_advisor_projects/")
 def get_advisor_projects(advisor="None"):
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     projects = []
     for project in data:
         for sector in data[project]['sectors']:
@@ -527,8 +525,7 @@ def get_advisor_projects(advisor="None"):
 
 @app.route("/get_month_sale/<month>/<year>")
 def get_month_sale(month, year):
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     month_sale = ""
     ammount = 0
     for project in data:
@@ -546,8 +543,7 @@ def get_month_sale(month, year):
 def new_sale():
     if request.method == "POST":
         # get the data from the form
-        with open('data.json', "r") as f:
-            json_data = json.load(f)
+        json_data = get_data()
         data = dict(request.form)
         data['emi'] = True if data.get('emi') else False
         if data['status'] == "available":
@@ -610,8 +606,7 @@ def new_sale():
             json.dump(json_data, f, indent=4)
         return "Success"
     # return data of the plots that are available or "Not for sale" or "held"
-    with open('data.json', "r") as f:
-        data = json.load(f)              
+    data = get_data()           
     return render_template(
         'home/new_sale.html', 
         data=data,
@@ -624,8 +619,7 @@ def new_sale():
 @app.route("/get_month_emi/<yearmonth>/<project>")
 @app.route("/get_month_emi/<yearmonth>")
 def get_month_emi(yearmonth=None, project=None):
-    with open('data.json', 'r') as f:
-        data = json.load(f)
+    data = get_data()
     
     if not yearmonth or yearmonth == "0":
         yearmonth = datetime.now().strftime("%Y-%m")
@@ -695,8 +689,7 @@ def emi():
     )
 
 def _get_projects():
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     projects = []
     for project in data:
         projects.append(project)
@@ -705,8 +698,7 @@ def _get_projects():
 def receipt():
     if request.method == "POST":
         # get the data from the form
-        with open('data.json', "r") as f:
-            json_data = json.load(f)
+        json_data = get_data()
         form_data = dict(request.form)
         for x in form_data:
             if not form_data[x]:
@@ -730,8 +722,7 @@ def receipt():
             json.dump(json_data, f, indent=4)
 
         return "Success"
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
 
     new_data = deepcopy(data)
     for project in data:
@@ -749,8 +740,7 @@ def receipt():
 
 
 def _get_advisors():
-    with open('data.json', "r") as f:
-        data = json.load(f)
+    data = get_data()
     advisors = []
     for project in data:
         for sector in data[project]['sectors']:
