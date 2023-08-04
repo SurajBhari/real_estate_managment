@@ -755,4 +755,4 @@ def profile():
     return render_template('auth/profile.html', username=session['username'],title="Profile") 
 
 if __name__ =='__main__':
-	app.run(debug=True)
+	app.run(debug=True, port=80, host="0.0.0.0")
