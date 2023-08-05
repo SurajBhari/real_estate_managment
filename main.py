@@ -184,8 +184,6 @@ def export():
     except KeyError:
         extra = ""
     # write the data to a json file for debugging
-    with open("export.json", "w") as f:
-        json.dump(data, f, indent=4)
     location = request.environ.get('HTTP_REFERER').split("/")[-1].upper()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     wb = openpyxl.Workbook()
