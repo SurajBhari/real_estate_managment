@@ -164,121 +164,55 @@ def incentive():
     )
 
 
-@app.route("/download/<month>/<radvisor>")
-@app.route('/download/<month>')
-@app.route('/download/')
-def download(month=None, radvisor=None):
-    data = get_data()
-    
-    workbook = openpyxl.Workbook()
-    if month:
-        if not month[0].isnumeric():
-            radvisor = month
-            month = None
-    worksheet = workbook.active
-    for advisor in _get_advisors():
-        if radvisor:
-            if radvisor != advisor:
+@app.route('/download')
+def download():
+    global LOCK
+    while LOCK:
+        pass
+    return send_file('export.xlsx')
+
+@app.route("/export", methods=["POST"])
+def export():
+    global LOCK
+    LOCK = True
+    data = json.loads(request.data.decode("utf-8"))
+    # write to a text file and send it to the user
+    headers = data['headers']
+    tdata = data['data']
+    try:
+        extra = data['extra']
+    except KeyError:
+        extra = ""
+    # write the data to a json file for debugging
+    with open("export.json", "w") as f:
+        json.dump(data, f, indent=4)
+    location = request.environ.get('HTTP_REFERER').split("/")[-1].upper()
+    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    wb = openpyxl.Workbook()
+    sheet = wb.active
+    sheet.append([location, dt])
+    for x in range(len(headers)):
+        sheet.append(headers[x])
+        for row in tdata[x]:
+            is_empty = True
+            for y in row:
+                if y:
+                    is_empty = False
+            if is_empty:
                 continue
-        tabular_data = []
-        uncollected = []
-        for project in data:
-            for sector in data[project]['sectors']:
-                for plot in data[project]['sectors'][sector]['plots']:
-                    if data[project]['sectors'][sector]['plots'][plot]['status'].lower() in ["available", "not for sale", "held"]:
-                        continue
-                    if advisor != data[project]['sectors'][sector]['plots'][plot]['advisor']:
-                        continue
-                    incentive_percent = int(data[project]['sectors'][sector]['plots'][plot]['incentive']) # in percentage
-                    adv = data[project]['sectors'][sector]['plots'][plot]['advisor']
-                    reciept_entries = data[project]['sectors'][sector]['plots'][plot]['reciept_entry']
-                    is_emi = data[project]['sectors'][sector]['plots'][plot]['is_emi']
-                    total_amount_recieved = 0
-                    for reciept in reciept_entries:
-                        if month:
-                            if month not in reciept['date']:
-                                continue
-                        reciept_no = reciept['reciept_number']
-                        total_amount_recieved += int(reciept['amount'])
-                        incentive = int(int(reciept['amount']) * incentive_percent / 100)
-                        customer_name = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
-                        tabular_data.append(
-                            [
-                                project,
-                                sector,
-                                plot,
-                                reciept_no,
-                                adv,
-                                customer_name,
-                                reciept['date'],
-                                reciept['amount'],
-                                incentive,
-                                incentive_percent
-                                ]
-                        )
-                    if is_emi:
-                        start_date = data[project]['sectors'][sector]['plots'][plot]['emi']['start_date']
-                        end_date = data[project]['sectors'][sector]['plots'][plot]['emi']['end_date']
-                        start_date = datetime.strptime(start_date, "%Y-%m-%d")
-                        end_date = datetime.strptime(end_date, "%Y-%m-%d")
-                        if not month:
-                            continue
-                        dt_month = datetime.strptime(month, "%Y-%m")
-                        if not (dt_month >= start_date and dt_month <= end_date):
-                            continue
-                        have_emi_for_this_month = False
-                        for reciept in reciept_entries:
-                            reciept_Date = datetime.strptime(reciept['date'], "%Y-%m-%d")
-                            if reciept_Date.month == dt_month.month and reciept_Date.year == dt_month.year:
-                                have_emi_for_this_month = True
-                                break
-                        if not have_emi_for_this_month:
-                            kisht = int(data[project]['sectors'][sector]['plots'][plot]['emi']['amount']) / int(data[project]['sectors'][sector]['plots'][plot]['emi']['months'])
-                            kisht = int(kisht)
-                            incentive = int(kisht * incentive_percent / 100)
-                            customer_name = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
-                            uncollected.append(
-                                [
-                                    project,
-                                    sector,
-                                    plot,
-                                    adv,
-                                    customer_name,
-                                    start_date.strftime("%Y-%m-%d"),
-                                    kisht,
-                                    incentive,
-                                    incentive_percent
-                                    ]
-                            )
-        if not tabular_data:
-            continue
-        worksheet.append(["COLLECTED", advisor])
-
-        worksheet.append(["Project", "Sector", "Plot", "Reciept No", "Advisor", "Customer Name", "Date", "Amount", "Incentive", "Incentive Percent"])
-        total_incentive = 0
-
-        for x in tabular_data:
-            total_incentive += int(x[8])
-            worksheet.append(x)
-    
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-        worksheet.append([total_incentive])
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-        worksheet.append(["UNCOLLECTED", advisor])
-        worksheet.append(["Project", "Sector", "Plot", "Advisor", "Customer Name", "Date", "Amount", "Incentive", "Incentive Percent"])
-        total_incentive = 0
-        for x in uncollected:
-            total_incentive += int(x[7])
-            worksheet.append(x)
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-        worksheet.append([total_incentive*-1])
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-        worksheet.append(["", "", "", "", "", "", "", "", "", ""])
-
-    file_name = f"./incentive_reports/Incentive-{month}.xlsx"
-    workbook.save(file_name)
-    return send_file(file_name, as_attachment=True)
+            sheet.append(row)
+        for y in range(2):
+            sheet.append(list("--"*len(headers[x])))
+    if extra:
+        for r in extra.split('\n'):
+            sheet.append([r])
+    font = openpyxl.styles.Font(size=20) 
+    sheet["A1"].font = font
+    sheet["B1"].font = font
+    wb.save("export.xlsx")
+    wb.close()
+    LOCK = False
+    return "Success"
         
 @app.route("/get_incentive/<month>/<advisor>")
 @app.route("/get_incentive/<month>")
@@ -691,7 +625,7 @@ def _get_projects():
     for project in data:
         projects.append(project)
     return projects
-@app.route("/receipt/", methods=["GET", "POST"])
+@app.route("/receipt", methods=["GET", "POST"])
 def receipt():
     if request.method == "POST":
         # get the data from the form
