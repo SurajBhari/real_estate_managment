@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session,flash, jsonify, send_file
-import re
 import openpyxl
 
-import sqlite3
+from validate import validate_otp as validate
 import time
 from copy import deepcopy
 from datetime import datetime
@@ -13,8 +12,6 @@ app = Flask(__name__)
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = '1a2b3c4d5e6d7g8h9i10'
 
-conn = sqlite3.connect('database.db', check_same_thread=False)
-cursor = conn.cursor()
 
 available_status = ["available", "Not for sale", "held", "booked", "registered", "agreement"]
 
@@ -50,50 +47,21 @@ template = {
     "advisor": "",
     "date": ""
 }
-try:
-    cursor.execute('''
-        CREATE TABLE accounts(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL,
-            email TEXT NOT NULL,
-            password TEXT NOT NULL
-        )
-    ''')
-except Exception as e:
-    # fetch all the data from the table
-    cursor.execute('SELECT * FROM accounts')
-    rows = cursor.fetchall()
-    pass
-else:
-    cursor.execute('''
-        INSERT INTO accounts(username, email, password) VALUES('admin', 'password', 'admin@gmail.com')
-    ''')
-    conn.commit()
-
 
 
 # http://localhost:5000/login/ - this will be the login page, we need to use both GET and POST requests
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST' and 'username' in request.form and 'password' in request.form:
-        username = request.form['username']
+    if request.method == 'POST' and 'password' in request.form:
         password = request.form['password']
-
-        # Fetch data using a tuple since the result is a tuple
-        cursor.execute('SELECT * FROM accounts WHERE username=?', (username, ))
-        account = cursor.fetchone()
-
-        if account[2] == password:
+        if validate(password):
             session['loggedin'] = True
-            session['id'] = account[0]  # Use the index position to get the values from the tuple
-            session['username'] = account[1]
+            session['username'] = 'admin'
             session['lastused'] = time.time()
             return redirect(url_for('home'))
         else:
-            cursor.execute('SELECT * FROM accounts WHERE username=?', (username,))
-            account = cursor.fetchone()
-            flash("Incorrect username/password!", "danger")
+            flash("Incorrect password!", "danger")
 
     return render_template('auth/login.html', title="Login")
 
