@@ -22,12 +22,13 @@ available_status = ["available", "Not for sale", "held", "booked", "registered",
 """
 CREATE TABLE accounts (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL,   
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL
 ); 
 """
-
+global LOCK
+LOCK = False
 template = {
     "size": [
         0,
@@ -126,7 +127,13 @@ def before_request():
         if not session['loggedin']:
             return redirect(url_for('login'), code=302)
         session['lastused'] = time.time()
-
+    # if POST
+    if request.method == "POST":
+        file_name = f"backup/data-{datetime.now().strftime('%Y-%m-%d-%H-%M')}.json"
+        with open(file_name, "w") as f:
+            json.dump(get_data(), f, indent=4)
+        print(f"Took a Backup {file_name}")
+                
 
 @app.route('/logout')
 def logout():
@@ -166,14 +173,12 @@ def incentive():
 
 @app.route('/download')
 def download():
-    global LOCK
     while LOCK:
         pass
     return send_file('export.xlsx')
 
 @app.route("/export", methods=["POST"])
 def export():
-    global LOCK
     LOCK = True
     data = json.loads(request.data.decode("utf-8"))
     # write to a text file and send it to the user
@@ -183,7 +188,6 @@ def export():
         extra = data['extra']
     except KeyError:
         extra = ""
-    # write the data to a json file for debugging
     location = request.environ.get('HTTP_REFERER').split("/")[-1].upper()
     dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     wb = openpyxl.Workbook()
