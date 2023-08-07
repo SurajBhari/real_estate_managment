@@ -629,7 +629,7 @@ def print_receipt(rnumber:int):
     
     
     return render_template(
-        'home/print_reciept.html',
+        'home/print_receipt.html',
         receipt=receipt,
         mobile_no=mobile_no,
         company_name=company_name,
