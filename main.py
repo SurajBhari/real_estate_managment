@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session,flash, jsonify, send_file
+import re
 import openpyxl
 
 from validate import validate_otp as validate
+import sqlite3
 import time
 from copy import deepcopy
 from datetime import datetime
@@ -86,7 +88,7 @@ def before_request():
     except KeyError:
         return redirect(url_for('login', title="Login"), code=302)
     else:
-        if lastused + 100 < time.time():
+        if lastused + 500 < time.time():
             session['loggedin'] = False
             # delete the session and all the info 
             return redirect(url_for('login'), code=302)
@@ -595,6 +597,51 @@ def _get_projects():
     for project in data:
         projects.append(project)
     return projects
+
+@app.route("/print_receipt/<rnumber>")
+def print_receipt(rnumber:int):
+    # first find the reciept number in the json file
+    data = get_data()
+    found = False
+    for project in data:
+        for sector in data[project]['sectors']:
+            for plot in data[project]['sectors'][sector]['plots']:
+                for receipt in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
+                    if str(receipt['reciept_number']) == str(rnumber):
+                        found = True
+                        rno = receipt['reciept_number']
+                        ammount = receipt['amount']
+                        mode = receipt['mode']
+                        date = receipt['date']
+                        break
+    if not found:
+        return "No Receipt Found"
+    try:
+        address = data[project]['address']
+    except KeyError:
+        address = ""
+    mobile_no = "9610449712"
+    company_name = "Monarch Buildestate Pvt. Ltd."
+    project_name = project
+    
+    
+    return render_template(
+        'home/print_reciept.html',
+        receipt=receipt,
+        mobile_no=mobile_no,
+        company_name=company_name,
+        project_name=project_name,
+        address=address,
+        rno=rno,
+        ammount=ammount,
+        mode=mode,
+        date=date,
+        sector=sector,
+        plot=plot,
+        title="Print Receipt"
+    )
+
+
 @app.route("/receipt", methods=["GET", "POST"])
 def receipt():
     if request.method == "POST":

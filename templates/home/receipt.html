@@ -115,10 +115,13 @@
                     const amount = document.createElement('td');
                     const mode = document.createElement('td');
                     const isCheque = document.createElement('td');
+                    const printReceipt = document.createElement('td');
                     total_reciept += plot['reciept_entry'][key]['amount'];
                     date.textContent = plot['reciept_entry'][key]['date'];
                     amount.textContent = plot['reciept_entry'][key]['amount'];
                     mode.textContent = plot['reciept_entry'][key]['mode'];
+
+                    printReceipt.innerHTML = `<a href="/print_receipt/${plot['reciept_entry'][key]['reciept_number']}"><i class="fas fa-print"></i></a>`;
                     console.log(plot)
                     receipt_number.textContent = plot['reciept_entry'][key]['reciept_number'];
 
@@ -126,7 +129,6 @@
                     row.appendChild(receipt_number)
                     row.appendChild(amount);
                     row.appendChild(mode);
-                    table.appendChild(row);
                     if (plot['reciept_entry'][key]['is_cheque']) {
                         const cheque = document.createElement('td');
                         const bank = document.createElement('td');
@@ -136,6 +138,16 @@
                         row.appendChild(bank);
                         row.appendChild(chequeNo);
                     }
+                    else {
+                        const bank = document.createElement('td');
+                        const chequeNo = document.createElement('td');
+                        bank.textContent = '-';
+                        chequeNo.textContent = '-';
+                        row.appendChild(bank);
+                        row.appendChild(chequeNo);
+                    }
+                    row.appendChild(printReceipt);
+                    table.appendChild(row);
                 }
                 const plotDetails = document.getElementById('plotDetails');
                 let remaining_amount = plot['deal_price'] - total_reciept;
