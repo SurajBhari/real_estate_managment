@@ -23,6 +23,7 @@ data = {}
 for project in projects:
     data[project] = {}
     data[project]["sectors"] = {}
+    data[project]['address'] = fake.address()
     for sector in sectors:
         data[project]['sectors'][sector] = {}
         data[project]['sectors'][sector]['plots'] = {}
