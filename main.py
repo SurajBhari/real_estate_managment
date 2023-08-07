@@ -612,6 +612,8 @@ def print_receipt(rnumber:int):
                         rno = receipt['reciept_number']
                         ammount = receipt['amount']
                         mode = receipt['mode']
+                        if mode == "cheque":
+                            mode = f"Cheque {receipt['cheque']['bank']}/{receipt['cheque']['cheque_no']}"
                         date = receipt['date']
                         size = [str(x) for x in data[project]['sectors'][sector]['plots'][plot]['size']]
                         size = "X".join(size)
