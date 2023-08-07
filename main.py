@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session,flash, jsonify, send_file
 import re
 import openpyxl
+import webbrowser
 
 from validate import validate_otp as validate
 import sqlite3
@@ -737,4 +738,6 @@ def profile():
     return render_template('auth/profile.html', username=session['username'],title="Profile") 
 
 if __name__ =='__main__':
-	app.run(debug=True, port=80, host="0.0.0.0")
+    # open localhost in browser 
+    webbrowser.open('http://localhost')
+    app.run(debug=True, port=80, host="0.0.0.0")
