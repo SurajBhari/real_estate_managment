@@ -613,7 +613,10 @@ def print_receipt(rnumber:int):
                         ammount = receipt['amount']
                         mode = receipt['mode']
                         date = receipt['date']
+                        size = [str(x) for x in data[project]['sectors'][sector]['plots'][plot]['size']]
+                        size = "X".join(size)
                         break
+                        
     if not found:
         return "No Receipt Found"
     try:
@@ -638,6 +641,7 @@ def print_receipt(rnumber:int):
         date=date,
         sector=sector,
         plot=plot,
+        size=size,
         title="Print Receipt"
     )
 
