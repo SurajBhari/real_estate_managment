@@ -687,9 +687,21 @@ def receipt():
         'home/receipt.html', 
         data=new_data,
         available_payment_method=available_payment_method,
+        next_reciept_number = _get_next_reciept_number(),
         title="Reciept"
     )
 
+def _get_next_reciept_number():
+    data = get_data()
+    reciept_numbers = []
+    for project in data:
+        for sector in data[project]['sectors']:
+            for plot in data[project]['sectors'][sector]['plots']:
+                for reciept in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
+                    reciept_numbers.append(int(reciept['reciept_number']))
+    if not reciept_numbers:
+        return 1
+    return max(reciept_numbers) + 1
 
 def _get_advisors():
     data = get_data()
