@@ -57,16 +57,9 @@
     <label>EMI Details:</label></br> 
     <!--checkbox for emi-->
     <label>EMI:</label>
-    <input type="checkbox" id="emi" name="emi" onchange="decideVisibilityemi()" value="is Emi ?">
+    <input type="checkbox" id="emi" name="emi" value="is Emi ?">
 </br> </br>
-    <div id="emi_details">
-        <input type="text" id="emi_amount" name="emi_amount" placeholder="EMI Amount"> </br>
-        <label id= "emi_start_lbl">EMI Start Date:</label> </br>
-        <input type="date" id="emi_start_date" name="emi_start_date" min="2018-01-01" max="2028-12-31"> </br>
-        <label id= "emi_end_lbl"> EMI End Date:</label> </br>
-        <input type="date" id="emi_end_date" name="emi_end_date" min="2018-01-01" max="2028-12-31"> </br> </br> 
-        <input type="text" id="emi_duration" name="emi_duration" placeholder="EMI Duration in months"> </br></br> </br> 
-    </div>
+
     <!-- Placeholder with current date in DD/MM/YYYY format-->
     <label>Date:</label> </br>
     <input type="date" id="date" name="date" min="2018-01-01" max="2028-12-31"></br> </br> 
@@ -78,16 +71,6 @@
     <input type="submit" value="Submit"> </br>
 </form>
 <script>
-    hideEmiFields();
-    function decideVisibilityemi(){
-        const emiCheckbox = document.getElementById('emi');
-        if (emiCheckbox.checked) {
-            showEmiFields();
-        }
-        else{
-            hideEmiFields();
-        }
-    }
     function populateSectors() {
         let data = {{ data | tojson }};
         const propertyDropdown = document.getElementById('project');
@@ -163,14 +146,10 @@
                     document.getElementById('customer_name').value = '';
                     document.getElementById('customer_phone').value = '';
                     document.getElementById('customer_address').value = '';
-                    document.getElementById('emi_amount').value = '';
                     document.getElementById('date').value = '';
                     document.getElementById('status').value = plot.status;
                     document.getElementById('advisor').value = '';
                     document.getElementById('emi').value = '';
-                    document.getElementById('emi_start_date').value = '';
-                    document.getElementById('emi_end_date').value = '';
-                    document.getElementById('emi_duration').value = '';
                     document.getElementById('incentive').value = '';
                     document.getElementById('files').innerHTML = '<strong>Files:</strong>';
                     return;
@@ -185,26 +164,11 @@
                 document.getElementById('customer_name').value = plot.customer.name;
                 document.getElementById('customer_phone').value = plot.customer.phone;
                 document.getElementById('customer_address').value = plot.customer.address;
-                document.getElementById('emi_amount').value = plot.emi.amount;
                 document.getElementById('date').value = plot.date;
                 document.getElementById('status').value = plot.status;
                 document.getElementById('advisor').value = plot.advisor;
                 document.getElementById('incentive').value = plot.incentive;
-                if (plot.is_emi) {
-                    document.getElementById('emi').checked = plot.is_emi;
-                    document.getElementById('emi_start_date').value = plot.emi.start_date;
-                    document.getElementById('emi_end_date').value = plot.emi.end_date;
-                    document.getElementById('emi_duration').value = plot.emi.months;
-                    document.getElementById('emi_amount').value = plot.emi.amount;
-                    console.log(plot)
-                    document.getElementById('')
-                } else {
-                    document.getElementById('emi').value = plot.is_emi;
-                    document.getElementById('emi_start_date').value = '';
-                    document.getElementById('emi_end_date').value = '';
-                    document.getElementById('emi_duration').value = '';
-                    document.getElementById('emi_amount').value = '';
-                }
+                document.getElementById('emi').checked = plot.is_emi;
                 document.getElementById('files').innerHTML = '<strong>Files:</strong>';
                 for (const file of plot.files) {
                     const p = document.createElement('p');
@@ -216,7 +180,6 @@
                     p.appendChild(a);
                     document.getElementById('files').appendChild(p);
                 }
-                decideVisibilityemi();
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
