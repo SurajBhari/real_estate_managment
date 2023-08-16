@@ -233,7 +233,8 @@ def get_incentive(month=None, advisor=None):
                             reciept['date'],
                             reciept['amount'],
                             incentive,
-                            incentive_percent
+                            incentive_percent,
+                            is_emi
                             ]
                     )
                 if is_emi:
@@ -243,15 +244,8 @@ def get_incentive(month=None, advisor=None):
                         if advisor != adv:
                             continue
                     dt_month = datetime.strptime(month, "%Y-%m")
-                    emi_start = data[project]['sectors'][sector]['plots'][plot]['emi']['start_date']
-                    emi_end = data[project]['sectors'][sector]['plots'][plot]['emi']['end_date']
-                    emi_start = datetime.strptime(emi_start, "%Y-%m-%d")
-                    emi_end = datetime.strptime(emi_end, "%Y-%m-%d")
-                    if not (dt_month >= emi_start and dt_month <= emi_end):
-                        continue
-                    have_emi_for_this_month = False               
-                    for reciept in reciept_entries:
-                        
+                    have_emi_for_this_month = False
+                    for reciept in reciept_entries:    
                         reciept_Date = datetime.strptime(reciept['date'], "%Y-%m-%d")
                         if reciept_Date.month == dt_month.month and reciept_Date.year == dt_month.year:
                             have_emi_for_this_month = True
@@ -259,9 +253,9 @@ def get_incentive(month=None, advisor=None):
                     
                     if not have_emi_for_this_month:
                         # year and month from dt_month and day from emi_statrt
-                        x = datetime(dt_month.year, dt_month.month, emi_start.day)
-                        kisht = int(data[project]['sectors'][sector]['plots'][plot]['emi']['amount']) / int(data[project]['sectors'][sector]['plots'][plot]['emi']['months'])
-                        kisht = int(kisht)
+                        x = datetime(dt_month.year, dt_month.month, dt_month.day)
+                        collected_amount = sum([int(x['amount']) for x in reciept_entries if x['amount']])
+                        kisht = int(data[project]['sectors'][sector]['plots'][plot]['deal_price']) - collected_amount
                         incentive = int(kisht * incentive_percent / 100)
                         customer_name = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
                         uncollected.append(
@@ -274,7 +268,8 @@ def get_incentive(month=None, advisor=None):
                                 x.strftime("%Y-%m-%d"),
                                 kisht,
                                 incentive,
-                                incentive_percent
+                                incentive_percent,
+                                is_emi
                                 ]
                         )
     return jsonify([tabular_data, uncollected])
@@ -476,18 +471,7 @@ def new_sale():
             "address": data['customer_address']
         }
         json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['status'] = data['status']
-        if data["emi"]:
-            emi = {
-                "amount": data['emi_amount'],
-                "months": data['emi_duration'],
-                "start_date": data['emi_start_date'],
-                "end_date": data['emi_end_date']
-            }
-            json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['is_emi'] = True
-            json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['emi'] = emi
-        else:
-            json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['emi'] = {}
-            json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['is_emi'] = False
+        json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['is_emi'] = data['emi']
         json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['reciept_entry'] = []
         json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['advisor'] = data['newadvisor'] if data['newadvisor'] else data['advisor']
         json_data[data['project']]["sectors"][data['sector']]["plots"][data['plot']]['date'] = data['date']
@@ -540,11 +524,9 @@ def get_month_emi(yearmonth=None, project=None):
                     continue
                 if not data[project]['sectors'][sector]['plots'][plot]['is_emi']:
                     continue
-                emi_start_date = datetime.strptime(data[project]['sectors'][sector]['plots'][plot]['emi']['start_date'], "%Y-%m-%d")
-                emi_end_date = datetime.strptime(data[project]['sectors'][sector]['plots'][plot]['emi']['end_date'], "%Y-%m-%d")
-                if not (dt_month >= emi_start_date and dt_month <= emi_end_date):
-                    continue
                 reciept_entries = data[project]['sectors'][sector]['plots'][plot]['reciept_entry']
+                kisht = int(data[project]['sectors'][sector]['plots'][plot]['deal_price']) - sum([int(x['amount']) for x in reciept_entries if x['amount']])
+                collected_amount = sum([int(x['amount']) for x in reciept_entries if x['amount']])
                 have_this_month_emi = False
                 for reciept in reciept_entries:
                     reciept_Date = datetime.strptime(reciept['date'], "%Y-%m-%d")
@@ -559,14 +541,12 @@ def get_month_emi(yearmonth=None, project=None):
                                 data[project]['sectors'][sector]['plots'][plot]['customer']['name'],
                                 reciept['date'],
                                 reciept['amount'],
-                                data[project]['sectors'][sector]['plots'][plot]['emi']['amount'],
+                                kisht,
                                 data[project]['sectors'][sector]['plots'][plot]['advisor']
                             ]
                         )
-
                 if not have_this_month_emi:
-                    kisht = int(data[project]['sectors'][sector]['plots'][plot]['emi']['amount']) / int(data[project]['sectors'][sector]['plots'][plot]['emi']['months'])
-                    kisht = int(kisht)
+                    # kisht would be deal price minus total amount of receipt done
                     uncollected.append(
                         [
                             project,
@@ -574,8 +554,8 @@ def get_month_emi(yearmonth=None, project=None):
                             plot,
                             data[project]['sectors'][sector]['plots'][plot]['customer']['name'],
                             dt_month.strftime("%Y-%m-%d"),
+                            collected_amount,
                             kisht,
-                            data[project]['sectors'][sector]['plots'][plot]['emi']['amount'],
                             data[project]['sectors'][sector]['plots'][plot]['advisor']
                         ]
                     )
