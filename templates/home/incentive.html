@@ -128,6 +128,7 @@
                         var reciept_ammount_cell = document.createElement("th");
                         var incentive_cell = document.createElement("th");
                         var customer_name_cell = document.createElement("th");
+                        var is_emi_cell = document.createElement("th");
 
                         plot_name_cell.innerHTML = 'Plot';
                         reciept_number_cell.innerHTML = 'Reciept No.';
@@ -135,6 +136,7 @@
                         reciept_ammount_cell.innerHTML = 'Reciept Ammount';
                         advisor_name_cell.innerHTML = 'Advisor';
                         customer_name_cell.innerHTML = 'Customer';
+                        is_emi_cell.innerHTML = "EMI";
 
                         incentive_cell.innerHTML = 'Incentive';
 
@@ -145,6 +147,7 @@
                         row.appendChild(advisor_name_cell);
                         row.appendChild(customer_name_cell);
                         row.appendChild(incentive_cell);
+                        row.appendChild(is_emi_cell);
                         table.appendChild(row);
                         for(let i=0; i< data[0].length; i++) {
                             /*
@@ -157,7 +160,8 @@
                             reciept['date'],
                             reciept['amount'],
                             incentive,
-                            incentive_percent
+                            incentive_percent,
+                            is_emi
                             ]*/
                             var plot_name = data[0][i][0] + '-' + data[0][i][1] + '-' + data[0][i][2];
                             var reciept_no = data[0][i][3];
@@ -166,7 +170,8 @@
                             var reciept_date = data[0][i][6];
                             var reciept_ammount = data[0][i][7];      
                             var incentive = data[0][i][8];
-                            var incentive_percent = data[0][i][9];    
+                            var incentive_percent = data[0][i][9]; 
+                            var is_emi = data[0][i][10];   
                             total_reciept_amount += reciept_ammount;
                             total_incentive += incentive;
                             // series should be in the same order as the table head
@@ -179,7 +184,9 @@
                             var reciept_ammount_cell = document.createElement("td");
                             var incentive_cell = document.createElement("td");
                             var customer_name_cell = document.createElement("td");
+                            var is_emi_cell = document.createElement("td");
 
+                            is_emi_cell.innerHTML = is_emi;
                             plot_name_cell.innerHTML = plot_name;
                             reciept_number_cell.innerHTML = reciept_no;
                             advisor_name_cell.innerHTML = advisor_name;
@@ -195,8 +202,8 @@
                             row.appendChild(advisor_name_cell);
                             row.appendChild(customer_name_cell);
                             row.appendChild(incentive_cell);
+                            row.appendChild(is_emi_cell);
                             table.appendChild(row);
-
                         }
                         var row = document.createElement("tr");
                         var total_incentive_cell = document.createElement("td");
@@ -231,6 +238,7 @@
                         var reciept_ammount_cell = document.createElement("th");
                         var incentive_cell = document.createElement("th");
                         var customer_name_cell = document.createElement("th");
+                        var is_emi_cell = document.createElement("th");
 
                         plot_name_cell.innerHTML = 'Plot';
                         reciept_date_cell.innerHTML = 'Date of Reciept';
@@ -238,6 +246,7 @@
                         advisor_name_cell.innerHTML = 'Advisor';
                         incentive_cell.innerHTML = 'Incentive';
                         customer_name_cell.innerHTML = 'Customer';
+                        is_emi_cell.innerHTML = 'EMI';
                         
                         row.appendChild(plot_name_cell);
                         row.appendChild(reciept_date_cell);
@@ -245,6 +254,7 @@
                         row.appendChild(advisor_name_cell);
                         row.appendChild(customer_name_cell);
                         row.appendChild(incentive_cell);
+                        row.appendChild(is_emi_cell);
 
                         table.appendChild(row);
                         
@@ -257,7 +267,8 @@
                                 x.strftime("%Y-%m-%d"),
                                 kisht,
                                 incentive,
-                                incentive_percent
+                                incentive_percent,
+                                is_emi
                                 ]*/
                             var plot_name = data[1][i][0] + '-' + data[1][i][1] + '-' + data[1][i][2];
                             var advisor_name = data[1][i][3];
@@ -266,6 +277,7 @@
                             var reciept_ammount = data[1][i][6];
                             var incentive = data[1][i][7];     
                             var incentive_percent = data[1][i][8];
+                            var is_emi = data[1][i][9];
 
                             total_incentive += incentive;
                             total_reciept_amount += reciept_ammount;
@@ -273,7 +285,8 @@
                             // series should be in the same order as the table head
                             // plot, reciept date, reciept ammount, advisor, incentive
                             var row = document.createElement("tr");
-
+                            
+                            var is_emi_cell = document.createElement("td");
                             var plot_name_cell = document.createElement("td");
                             var reciept_date_cell = document.createElement("td");
                             var reciept_ammount_cell = document.createElement("td");
@@ -281,6 +294,7 @@
                             var customer_name_cell = document.createElement("td");
                             var incentive_cell = document.createElement("td");
 
+                            is_emi_cell.innerHTML = is_emi;
                             plot_name_cell.innerHTML = plot_name;
                             reciept_date_cell.innerHTML = reciept_date;
                             reciept_ammount_cell.innerHTML = `₹ ${reciept_ammount}`;
@@ -294,6 +308,7 @@
                             row.appendChild(advisor_name_cell);
                             row.appendChild(customer_name_cell);
                             row.appendChild(incentive_cell);
+                            row.appendChild(is_emi_cell);
                             table.appendChild(row);
                         }
                         var row = document.createElement("tr");
