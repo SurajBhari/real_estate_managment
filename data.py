@@ -28,13 +28,13 @@ for project in projects:
         data[project]['sectors'][sector] = {}
         data[project]['sectors'][sector]['plots'] = {}
 
-        for i in range(0, random.randint(51, 100)):
+        for i in range(0, random.randint(1, 5)):
             date = datetime.date(random.randint(2015, 2023), random.randint(1, 12), random.randint(1, 28))
             #print(date)
             status = random.choice(["agreement", "registered", "booked", "held", "Not for sale", "available"])
             is_emi = random.choice([True, False])
-            size = [random.randint(100, 200), random.randint(100, 200)]
-            rate = random.randint(350, 550)
+            size = [random.randint(10, 25), random.randint(25, 50)]
+            rate = random.randint(100, 250)
             price = rate*size[0]*size[1]
             boooking_amount = random.randint(0, price) if is_emi else price
             deal_price = price
