@@ -124,15 +124,7 @@ def get_data():
 def incentive():
     data = get_data()
     tabular_data = []
-    unique_months = []
-    for project in data:
-        for sector in data[project]['sectors']:
-            for plot in data[project]['sectors'][sector]['plots']:
-                if data[project]['sectors'][sector]['plots'][plot]['status'].lower() in ["available", "not for sale", "held"]:
-                    continue
-                month = "-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[:2])
-                if month and month not in unique_months:
-                    unique_months.append(month)
+    unique_months = _get_unique_months()
     unique_months.sort()
     return render_template(
         'home/incentive.html', 
@@ -283,6 +275,11 @@ def _get_unique_months():
                     date = "-".join(data[project]['sectors'][sector]['plots'][plot]['date'].split('-')[:2])
                     if date and date not in unique_months:
                         unique_months.append(date)
+                for receipt in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
+                    if "-".join(receipt['date'].split('-')[1:]) not in unique_months:
+                        date = "-".join(receipt['date'].split('-')[:2])
+                        if date and date not in unique_months:
+                            unique_months.append(date)
     unique_months.sort()
     return unique_months
 @app.route("/search")
@@ -643,7 +640,7 @@ def receipt():
         data = {
             "mode": form_data["mode"],
             "date": form_data["receiptDate"],
-            "amount": form_data["amount"],
+            "amount": int(form_data["amount"]),
             "is_cheque": True if form_data["mode"] == "cheque" else False,     
             "reciept_number": form_data['receiptnumber']           
         }
@@ -713,11 +710,7 @@ def pdf(file_name):
 def home():
     return render_template('home/home.html', username=session['username'],title="Home")
 
-@app.route('/profile')
-def profile():
-    return render_template('auth/profile.html', username=session['username'],title="Profile") 
-
 if __name__ =='__main__':
     # open localhost in browser 
-    webbrowser.open('http://localhost')
+    #webbrowser.open('http://localhost')
     app.run(debug=True, port=80, host="0.0.0.0")
