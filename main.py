@@ -54,7 +54,7 @@ template = {
 
 # http://localhost:5000/login/ - this will be the login page, we need to use both GET and POST requests
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST' and 'password' in request.form:
         password = request.form['password']
@@ -78,6 +78,10 @@ def get_available_status():
 @app.route('/favicon.ico')
 def favicon():
     return send_file('static/favicon.ico')
+
+@app.route('/scripts/<script_name>')
+def script(script_name):
+    return send_file(f'scripts/{script_name}')
 
 @app.before_request
 def before_request():
@@ -248,6 +252,8 @@ def get_incentive(month=None, advisor=None):
                         x = datetime(dt_month.year, dt_month.month, dt_month.day)
                         collected_amount = sum([int(x['amount']) for x in reciept_entries if x['amount']])
                         kisht = int(data[project]['sectors'][sector]['plots'][plot]['deal_price']) - collected_amount
+                        if not kisht:
+                            continue
                         incentive = int(kisht * incentive_percent / 100)
                         customer_name = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
                         uncollected.append(
@@ -286,11 +292,6 @@ def _get_unique_months():
 def search():
     data = get_data()
     unique_advisors = []
-    for project in data:
-        for sector in data[project]['sectors']:
-            for plot in data[project]['sectors'][sector]['plots']:
-                if data[project]['sectors'][sector]['plots'][plot]['advisor'] not in unique_advisors:
-                    unique_advisors.append(data[project]['sectors'][sector]['plots'][plot]['advisor'])
     unique_months = _get_unique_months()
     # tabular form of data
     # Project | Sector | Plot | Advisor | Customer Name | Status | EMI | Date | Size | Rate | Price |
@@ -304,6 +305,7 @@ def search():
     unique_rate = []
     unique_price = []
     plot_identifications = []
+    [plot_identifications.append(str(x)) for x in data.keys()]
     for project in data:
         for sector in data[project]['sectors']:
             for plot in data[project]['sectors'][sector]['plots']:
@@ -314,6 +316,7 @@ def search():
                 emi = str(data[project]['sectors'][sector]['plots'][plot]['is_emi']).lower()
                 date = data[project]['sectors'][sector]['plots'][plot]['date']
                 size = data[project]['sectors'][sector]['plots'][plot]['size']
+                size = f"{size[0]}x{size[1]}" if size else ''
                 rate = data[project]['sectors'][sector]['plots'][plot]['rate']
                 price = data[project]['sectors'][sector]['plots'][plot]['price']
                 files = data[project]['sectors'][sector]['plots'][plot]['files']
@@ -331,6 +334,11 @@ def search():
                     unique_price.append(price)
                 if plot_identification not in plot_identifications:
                     plot_identifications.append(plot_identification)
+                gained_amount = sum([r['amount'] for r in data[project]['sectors'][sector]['plots'][plot]['reciept_entry'] if r['amount']])
+                if not price:
+                    price = 0
+                remaining_amount = price-gained_amount
+                g_r = f"{gained_amount}/{remaining_amount}"
                 tabular_data.append(
                     [
                         plot_identification,
@@ -342,35 +350,17 @@ def search():
                         size,
                         rate,
                         price,
+                        g_r,
                         files
                     ]
                 )
     
     # if there is a '' in any of the data remove it 
-    for x in unique_rate:
-        if x == "":
-            unique_rate.remove(x)
-    for x in unique_price:
-        if x == "":
-            unique_price.remove(x)
-    for x in unique_size:
-        if x == "":
-            unique_size.remove(x)
-    for x in unique_date:
-        if x == "":
-            unique_date.remove(x)
-    for x in unique_status:
-        if x == "":
-            unique_status.remove(x)
-    for x in unique_customer_names:
-        if x == "":
-            unique_customer_names.remove(x)
-    for x in unique_advisors:
-        if x == "":
-            unique_advisors.remove(x)
-    for x in unique_months:
-        if x == "":
-            unique_months.remove(x)
+    unique_rate = [str(x) for x in unique_rate]
+    unique_price = [str(x) for x in unique_price]
+    unique_size = [str(x) for x in unique_size]
+    unique_status.append("")
+    unique_months.append("")
 
     unique_advisors.sort()
     unique_months.sort()
@@ -380,7 +370,7 @@ def search():
     unique_size.sort()
     unique_rate.sort()
     unique_price.sort()
-    plot_identifications.sort()    
+    #plot_identifications.sort()    
     return render_template(
         'home/search.html', 
         data=data,
@@ -389,7 +379,7 @@ def search():
         unique_months=unique_months,
         unique_customer_names=unique_customer_names,
         unique_status=unique_status,
-        unique_emi=["true", "false"],
+        unique_emi=["", "true", "false"],
         unique_date=unique_date,
         unique_size=unique_size,
         unique_rate=unique_rate,
@@ -544,6 +534,8 @@ def get_month_emi(yearmonth=None, project=None):
                         )
                 if not have_this_month_emi:
                     # kisht would be deal price minus total amount of receipt done
+                    if not kisht:
+                        continue
                     uncollected.append(
                         [
                             project,
@@ -595,35 +587,37 @@ def print_receipt(rnumber:int):
                         date = receipt['date']
                         size = [str(x) for x in data[project]['sectors'][sector]['plots'][plot]['size']]
                         size = "X".join(size)
-                        break
+                        try:
+                            address = data[project]['address']
+                        except KeyError:
+                            address = ""
+                        mobile_no = "9610449712"
+                        company_name = "Monarch Buildestate Pvt. Ltd."
+                        project_name = project
+                        customer = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
+                        
+                        
+                        return render_template(
+                            'home/print_receipt.html',
+                            receipt=receipt,
+                            mobile_no=mobile_no,
+                            company_name=company_name,
+                            project_name=project_name,
+                            address=address,
+                            rno=rno,
+                            ammount=ammount,
+                            mode=mode,
+                            date=date,
+                            sector=sector,
+                            plot=plot,
+                            size=size,
+                            customer=customer,
+                            title="Print Receipt"
+                        )
                         
     if not found:
         return "No Receipt Found"
-    try:
-        address = data[project]['address']
-    except KeyError:
-        address = ""
-    mobile_no = "9610449712"
-    company_name = "Monarch Buildestate Pvt. Ltd."
-    project_name = project
     
-    
-    return render_template(
-        'home/print_receipt.html',
-        receipt=receipt,
-        mobile_no=mobile_no,
-        company_name=company_name,
-        project_name=project_name,
-        address=address,
-        rno=rno,
-        ammount=ammount,
-        mode=mode,
-        date=date,
-        sector=sector,
-        plot=plot,
-        size=size,
-        title="Print Receipt"
-    )
 
 
 @app.route("/receipt", methods=["GET", "POST"])

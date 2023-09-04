@@ -24,8 +24,11 @@ sectors = []
 sector_index = 0
 while True:
     sector_alphabet = alphabets[sector_index]
-    number = input(f"Enter number of sectors in {sector_alphabet}: or enter 0 to exit: ")
+    number = input(f"Enter number of sectors in {sector_alphabet}: or enter -1 to exit: ")
     if number == "0":
+        sector_index += 1
+        continue
+    if number == "-1":
         break
     try:
         number = int(number)
@@ -38,7 +41,7 @@ while True:
     sector_alphabet = alphabets[sector_index]
     data[project_name]["sectors"][sector_alphabet] = {}
     data[project_name]['sectors'][sector_alphabet]['plots'] = {}
-    for i in range(0, number+1):
+    for i in range(1, number+1):
         data[project_name]['sectors'][sector_alphabet]['plots'][i] = {
             "size": "",
             "rate": "",
@@ -48,7 +51,6 @@ while True:
             "customer": {},
             "status": "Not for sale",
             "is_emi": "",
-            "emi": "",
             "reciept_entry": "",
             "advisor": "",
             "date": "",
