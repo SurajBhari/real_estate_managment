@@ -8,29 +8,83 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body class="loggedin">
-    <nav class="navtop">
-        <div>
-            <h1>Monarch Buildestate</h1>
-            <a href="{{ url_for('home') }}"><i class="fas fa-home"></i>Home</a>
-            <a href = {{url_for('search')}} ><i class="fas fa-search"></i>Search</button></a>
-            <a href = {{url_for('new_sale')}} > <i class="fas fa-handshake"></i>New Sale</button></a>
-            <a href = {{url_for('receipt')}} > <i class="fas fa-receipt"></i>Receipts</button></a>
-            <a href = {{url_for('incentive')}} > <i class="fas fa-crosshairs"></i>Incentive</button></a>
-            <a href = {{url_for('emi')}} > <i class="fas fa-credit-card"></i>EMI</button></a>
-            <a href= {{url_for('logout')}}><i class="fas fa-sign-out-alt"></i>Logout</a>
+    <header>
+        <div class="px-3 py-2 text-bg-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="/" class="d-flex align-items-center my-2 my-lg-0 me-lg-auto text-white text-decoration-none">
+                        <h1>Monarch Buildestate</h1>
+                    </a>
+                    <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+                        <li>
+                            <a href="{{ url_for('home') }}" class="nav-link text-white">
+                                <i class="fas fa-home"></i>  Home
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('search') }}" class="nav-link text-white">
+                                <i class="fas fa-search"></i>  Search
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('new_sale') }}" class="nav-link text-white">
+                                <i class="fas fa-handshake"></i>  New Sale
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('receipt') }}" class="nav-link text-white">
+                                <i class="fas fa-receipt"></i>  Receipts
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('incentive') }}" class="nav-link text-white">
+                                <i class="fas fa-crosshairs"></i>  Incentive
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('emi') }}" class="nav-link text-white">
+                                <i class="fas fa-credit-card"></i>  EMI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('logout') }}" class="nav-link text-white">
+                                <i class="fas fa-sign-out-alt"></i>  Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </nav>
+    </header>
+    
+
+    
     <div class="content">
         {% block content %}{% endblock %}
     </div>
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+        <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+        </a>
+        <span class="mb-3 mb-md-0 text-muted">© 2023 Monarch Buidestate Pvt. Ltd.</span>
+        </div>
+    
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+        </ul>
+    </footer>
+    </div>
     <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 </body>
 
 </html>

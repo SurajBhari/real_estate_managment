@@ -19,12 +19,12 @@
     <select id="sector" name="sector" value="sector" onchange="populatePlots()">Sector</select>
     <label for="plot">Plot</label>
     <select id="plot" name="plot" value="plot" onchange="getData()">Plot</select>
-    <table id="receipts"></table>
+    <table id="receipts" class="goodTable"></table>
     <pre id="plotDetails" name="plotDetails" style="white-space: pre-wrap;">
     </pre>
     </br></br></br></br></br></br></br></br></br></br>
     <div id="reciept_entry">
-        <button id="export" type="button" onclick="exportData()">Export</button>
+        <button id="export" type="button" onclick="exportData()" class="btn btn-secondary">Export</button>
         <h2> Make a new reciept entry </h2>
         <input type="date" id="receiptDate" name="receiptDate" min="2015-01-01" max="2028-12-31"> </br>
         <label for="number">Receipt Number</label> </br>
@@ -79,7 +79,7 @@
             .then(response => response.json())
             .then(data => {
                 const plot = data;
-                table.setHTML('')
+                table.innerHTML = "";
                 // Date Receipt number Amount Mode Bank Cheque No
                 // make the headings
                 const headingRow = document.createElement('tr');
@@ -122,7 +122,6 @@
                     mode.textContent = plot['reciept_entry'][key]['mode'];
 
                     printReceipt.innerHTML = `<a href="/print_receipt/${plot['reciept_entry'][key]['reciept_number']}"><i class="fas fa-print"></i></a>`;
-                    console.log(plot)
                     receipt_number.textContent = plot['reciept_entry'][key]['reciept_number'];
 
                     row.appendChild(date);
@@ -204,7 +203,6 @@
         // make a POST request to the backend to export the data
         const url = '/export';
         const dataToSend = dataTo;  
-        console.log(dataToSend);
         // first POST to the url and then GET the url 
         fetch(url, {
             method: 'POST',

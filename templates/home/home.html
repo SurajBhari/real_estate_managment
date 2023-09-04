@@ -6,12 +6,9 @@
 <h2>Home Page</h2>
 <p>Welcome back, {{ username }}!</p>
 <a href = {{url_for('search')}} > <button type="button" class="btn btn-primary">Search</button></a>
-<a href = {{url_for('new_sale')}} > <button type="button" class="btn btn-primary">New Sale</button></a>
-
-<a href = {{url_for('receipt')}} > <button type="button" class="btn btn-primary">Receipts</button></a>
-<a href = {{url_for('incentive')}} > <button type="button" class="btn btn-primary">Incentives</button></a>
-<a href = {{url_for('emi')}} > <button type="button" class="btn btn-primary">EMI</button></a>
+<a href = {{url_for('new_sale')}} > <button type="button" class="btn btn-secondary">New Sale</button></a>
+<a href = {{url_for('receipt')}} > <button type="button" class="btn btn-secondary">Receipts</button></a>
+<a href = {{url_for('incentive')}} > <button type="button" class="btn btn-secondary">Incentives</button></a>
+<a href = {{url_for('emi')}} > <button type="button" class="btn btn-secondary">EMI</button></a>
 </br> </br>
-<a href= {{url_for('logout')}}> <button type="button" class="btn btn-primary">Logout</button></a>
-
 {% endblock %}

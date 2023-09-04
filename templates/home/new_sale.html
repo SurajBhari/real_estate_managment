@@ -25,6 +25,7 @@
     <select id="plot" name="plot" onchange="fillForm()">
         <option value="">Select Plot</option>
     </select> </br></br>
+    <label>Status:</label>
     <select id="status" name="status">
         <option value="">Select Status</option>
         {% for status in available_status %}
@@ -32,16 +33,16 @@
         {% endfor %}
     </select> </br>
     <label >Size:</label></br>
-    <input type="number" id="size_width" name="size_width" placeholder="Size(width)"> </br>
-    <input type="number" id="size_length" name="size_length" placeholder="Size(length)"> </br> </br>
+    <input type="number" id="size_width" name="size_width" placeholder="Width"> 
+    <input type="number" id="size_length" name="size_length" placeholder="Length"> </br> </br>
     <label>Pricing Details:</label></br>
     <input type="number" id="rate" name="rate" placeholder="Rate"> </br>
-    <input type="number" id="price" name="price" placeholder="Price"> </br>
+    <input type="number" id="price" name="price" placeholder="Price">
     <input type="number" id="deal_price" name="deal_price" placeholder="Deal Price"> </br>
     <input type="number" id="booking_amount" name="booking_amount" placeholder="Booking Amount"> </br></br> 
     <label>Customer Details:</label></br>
-    <input type="text" id="customer_name" name="customer_name" placeholder="Customer Name"> </br>
-    <input type="number" id="customer_phone" name="customer_phone" placeholder="Customer Phone"> </br>
+    <input type="text" id="customer_name" name="customer_name" placeholder="Customer Name"> 
+    <input type="number" id="customer_phone" name="customer_phone" placeholder="Customer Phone"> 
     <input type="text" id="customer_address" name="customer_address" placeholder="Customer Address"> </br> </br> 
     
     <select id="advisor" name="advisor">
@@ -50,18 +51,15 @@
             <option value="{{ advisor }}">{{ advisor }}</option>
         {% endfor %}
     </select> 
-    <input type="text" id="newadvisor" name="newadvisor" placeholder="New Advisor"> </br>
+    <input type="text" id="newadvisor" name="newadvisor" placeholder="New Advisor"> </br> </br>
     <input type="number" id="incentive" name="incentive" placeholder="Incentive"> </br>
 </br> </br> 
     
-    <label>EMI Details:</label></br> 
-    <!--checkbox for emi-->
-    <label>EMI:</label>
-    <div class="checkbox-wrapper-19">
-        <input type="checkbox" id="cbtest-19" name="emi" value="is Emi ?"> <label for="cbtest-19" class="check-box">
+    <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" name="emi">
+        <label class="form-check-label" for="flexSwitchCheckDefault">EMI ?</label>
     </div>
-</br> </br>
-
+</br>
     <!-- Placeholder with current date in DD/MM/YYYY format-->
     <label>Date:</label> </br>
     <input type="date" id="date" name="date" min="2018-01-01" max="2028-12-31"></br> </br> 
@@ -156,7 +154,6 @@
                     document.getElementById('files').innerHTML = '<strong>Files:</strong>';
                     return;
                 }
-                console.log(plot)
                 document.getElementById('size_width').value = plot.size[0];
                 document.getElementById('size_length').value = plot.size[1];
                 document.getElementById('rate').value = plot.rate;

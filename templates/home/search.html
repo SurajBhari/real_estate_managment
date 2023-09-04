@@ -33,9 +33,9 @@
         <!-- Backend data will be displayed here -->
     </pre>
 
-    <button onclick="exportData()">Export</button>
+    <button onclick="exportData()" class="btn btn-secondary">Export</button>
     <h2> Raw Data </h2>
-    <table>
+    <table class="goodTable">
         <tr>
             <th>Plot</th>
             <th>Advisor</th>
@@ -46,6 +46,7 @@
             <th>Size</th>
             <th>Rate</th>
             <th>Price</th>
+            <th>Gained/Remaining</th>
             <th>Files</th>
         </tr>
         <tr>
@@ -126,6 +127,10 @@
                         <option value="{{ price }}">{{ price }}</option>
                     {% endfor %}
                 </select>
+            </td>
+            <td>
+            </td>
+            <td>
             </td>
         </tr>
         {% for row in tabular_data %}
@@ -212,36 +217,33 @@
             const priceDropdown = document.getElementById('price');
             const selectedPrice = priceDropdown.value;
             
-            if (selectedPlot){
-                tabular_data = tabular_data.filter(row => row[0] === selectedPlot);
+            if (plotsDropdown.selectedIndex){
+                tabular_data = tabular_data.filter(row => row[0].startsWith(selectedPlot));
             }
             // case insensitive
-            if (selectedAdvisor){
+            if (advisorsDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[1].toLowerCase() === selectedAdvisor.toLowerCase());
             }
-            if (selectedCustomer){
+            if (customersDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[2].toLowerCase() === selectedCustomer.toLowerCase());
             }
-            // case insensitive
-            if (selectedStatus){
+            if (statusDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[3].toLowerCase() === selectedStatus.toLowerCase());
             }
-            // case insensitive
-            if (selectedEmi){
+            if (emiDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[4].toLowerCase() === selectedEmi.toLowerCase());
             }
             // starts with that month
-            if (selectedMonth){
+            if (monthsDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[5].startsWith(selectedMonth));
             }
-            if (selectedSize){
-                // if both element of row[6] is in selectedSize
-                tabular_data = tabular_data.filter(row => selectedSize.includes(row[6][0]) && selectedSize.includes(row[6][1]));
+            if (sizeDropdown.selectedIndex){
+                tabular_data = tabular_data.filter(row => row[6] === selectedSize);
             }
-            if (selectedRate){
+            if (rateDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[7] == selectedRate);
             }
-            if (selectedPrice){
+            if (priceDropdown.selectedIndex){
                 tabular_data = tabular_data.filter(row => row[8] == selectedPrice);
             }
 
