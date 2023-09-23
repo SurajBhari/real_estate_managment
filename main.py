@@ -83,6 +83,17 @@ def favicon():
 def script(script_name):
     return send_file(f'scripts/{script_name}')
 
+def backup() -> str:
+    file_name = f"backup/data-{datetime.now().strftime('%Y-%m-%d-%H-%M')}.json"
+    with open(file_name, "w") as f:
+        json.dump(get_data(), f, indent=4)
+    print(f"Took a Backup {file_name}")
+    return f"Took a Backup {file_name}"
+
+@app.route("/backup")
+def backup_route():
+    return backup()
+
 @app.before_request
 def before_request():
     # if the request is from the login page, don't check the session
@@ -104,10 +115,7 @@ def before_request():
         session['lastused'] = time.time()
     # if POST
     if request.method == "POST":
-        file_name = f"backup/data-{datetime.now().strftime('%Y-%m-%d-%H-%M')}.json"
-        with open(file_name, "w") as f:
-            json.dump(get_data(), f, indent=4)
-        print(f"Took a Backup {file_name}")
+        print(backup())
                 
 
 @app.route('/logout')
