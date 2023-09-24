@@ -184,16 +184,19 @@
             // make a POST request to the backend to export the data
             const url = '/export';
             const dataToSend = dataTo;  
-            // first POST to the url and then GET the url 
+            // first POST to the url store the response and alert
             fetch(url, {
                 method: 'POST',
+                body: JSON.stringify(dataToSend),
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(dataToSend)
-            });
-            const get_url = '/download';
-            window.open(get_url, '_blank');
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                alert(data);
+            })
         }
 
         function updateTable(){
