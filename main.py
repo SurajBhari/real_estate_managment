@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session,flash, jsonify, send_file
 import re
 import openpyxl
+import os
 import webbrowser
 
 from validate import validate_otp as validate
@@ -145,14 +146,7 @@ def incentive():
         months = unique_months,
     )
 
-
-@app.route('/download')
-def download():
-    while LOCK:
-        pass
-    return send_file('export.xlsx')
-
-@app.route("/export", methods=["POST"])
+@app.route("/export", methods=["POST", "GET"])
 def export():
     LOCK = True
     data = json.loads(request.data.decode("utf-8"))
@@ -164,12 +158,13 @@ def export():
     except KeyError:
         extra = ""
     location = request.environ.get('HTTP_REFERER').split("/")[-1].upper()
-    dt = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    dt = datetime.now().strftime("%Y-%m-%d %H_%M_%S")
     wb = openpyxl.Workbook()
     sheet = wb.active
-    sheet.append([location, dt])
+    #sheet.append([location, dt]) no need to pass cuz file name contains info like that 
     for x in range(len(headers)):
         sheet.append(headers[x])
+        tdata[x][1] = [h if 'select' not in h.lower() else ' ' for h in tdata[x][1]]
         for row in tdata[x]:
             is_empty = True
             for y in row:
@@ -183,13 +178,12 @@ def export():
     if extra:
         for r in extra.split('\n'):
             sheet.append([r])
-    font = openpyxl.styles.Font(size=20) 
-    sheet["A1"].font = font
-    sheet["B1"].font = font
-    wb.save("export.xlsx")
+    file_name = f"exports/export-{location}-{dt}.xlsx"
+    open(file_name,"w+").close()
+    wb.save(file_name)
     wb.close()
-    LOCK = False
-    return "Success"
+    alert = f"Exported to {file_name} ✅"
+    return alert
         
 @app.route("/get_incentive/<month>/<advisor>")
 @app.route("/get_incentive/<month>")
