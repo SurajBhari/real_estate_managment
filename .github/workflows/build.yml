@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install -r ./src/requirements.txt
+        pip install -r ./requirements.txt
         pip install pyinstaller
 
     - name: Build executable
