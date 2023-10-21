@@ -28,8 +28,6 @@ jobs:
       
     - name: Move stuff in correct location
       run: |
-        touch ./backup/ignore 
-        touch ./exports/ignore
         mv ./dist/main.exe . 
         
     - name: Upload artifact
