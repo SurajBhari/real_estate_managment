@@ -3,6 +3,7 @@ import re
 import openpyxl
 import os
 import webbrowser
+import pyotp
 
 from validate import validate_otp as validate
 import sqlite3
@@ -66,7 +67,7 @@ def login():
             return redirect(url_for('home'))
         else:
             flash("Incorrect password!", "danger")
-
+    print(f"If you are using default then the password is -> {pyotp.TOTP('JBSWY3DPEHPK3PXP').now()}")
     return render_template('auth/login.html', title="Login")
 
 def _get_available_status():
