@@ -1,0 +1,33 @@
+name: Package Application with Pyinstaller
+
+on:
+  push:
+    branches:
+      - main  # Modify this based on the branch you want to trigger the action on
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10
+
+    - name: Install dependencies
+      run: |
+        pip install -r ./requirements.txt
+        pip install pyinstaller
+
+    - name: Build executable
+      run: pyinstaller ./main.py --onefile
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: main-executable
+        path: ./dist/main.exe
