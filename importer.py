@@ -55,7 +55,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         continue
     address = row[3].value
     mobile_no = row[4].value
-    print(row[5])
     if not row[5].value:
         p_size_missing.append(p_no)
         continue
@@ -93,6 +92,7 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         if not date:
             date = headings[col+2]
         #print(cr_no, date, amount)
+        print(amount)
         total = total+amount
         if not booking_date:
             booking_date = date
@@ -113,7 +113,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         r["date"] = date.strftime("%Y-%m-%d")
         r["amount"] = amount
         reciepts.append(r)
-    print(total)
     if len(reciepts) == 1:
         emi=False
     else:
@@ -157,13 +156,10 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     template["status"] = "booked"
     template["is_emi"] = emi
     template["reciept_entry"] = reciepts
-    template["advisor"] = advisor
+    template["advisor"] = advisor.lower().strip().capitalize()
     if not booking_date:
         booking_date_missing.append(p_no)
         continue
-    if isinstance(booking_date, str):
-        print(booking_date)
-
     template["date"] = booking_date.strftime("%Y-%m-%d")
     template["files"] = []
     #print(json.dumps(template, indent=4))
