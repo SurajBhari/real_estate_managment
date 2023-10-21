@@ -2,3 +2,8 @@ backup/*
 *.json
 *.xlsx
 *.pyc*
+data.json
+main.spec
+build/*
+dist/main.exe
+AF563000
