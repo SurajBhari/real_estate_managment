@@ -24,10 +24,21 @@ jobs:
         pip install pyinstaller
 
     - name: Build executable
-      run: pyinstaller ./main.py --onefile
-
+      run: pyinstaller --onefile --add-data "templates;templates" --add-data "static;static" --add-data "scripts;scripts" main.py
+      
+    - name: Move stuff in correct location
+      run: |
+        touch ./backup/ignore 
+        touch ./exports/ignore
+        mv ./dist/main.exe . 
+        
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: main-executable
-        path: ./dist/main.exe
+        name: Real Esatate Management system
+        path: |
+          ./main.exe
+          ./data.json
+          ./backup/ignore
+          ./exports/ignore
+
