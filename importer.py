@@ -1,12 +1,4 @@
 from openpyxl import load_workbook
-from openpyxl.utils import get_column_letter
-from openpyxl.utils import column_index_from_string
-from openpyxl.styles import PatternFill
-from openpyxl.styles import Font
-from openpyxl.styles import Alignment
-from openpyxl.styles import Border
-from openpyxl.styles import Side
-from openpyxl.styles import NamedStyle
 import random
 import json
 from datetime import datetime as dt
@@ -113,16 +105,16 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         r["date"] = date.strftime("%Y-%m-%d")
         r["amount"] = amount
         reciepts.append(r)
-    if len(reciepts) == 1:
+    r_total = row[col].value
+    t_amount = row[col+1].value
+    if len(reciepts) == 1 and t_amount == reciepts[0]["amount"]:
         emi=False
     else:
         emi=True
-    r_total = row[col].value
     if not total == r_total:
         print("Total mismatch")
         print(total, r_total)
         break
-    t_amount = row[col+1].value
     if not t_amount:
         t_amount_missing.append(p_no)
         continue
@@ -169,6 +161,7 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     if sector not in data[colony_name]["sectors"]:
         data[colony_name]["sectors"][sector] = {}
         data[colony_name]["sectors"][sector]["plots"] = {}
+    print(template)
     data[colony_name]["sectors"][sector]["plots"][pno] = template
 
 with open("data.json", "w+") as f:
