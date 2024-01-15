@@ -170,9 +170,9 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     template["date"] = booking_date.strftime("%Y-%m-%d")
     template["files"] = []
     #print(json.dumps(template, indent=4))
-    sector = p_no.split("-").upper()
+    sector = p_no.split("-")
     pno = sector[1]
-    sector = sector[0]
+    sector = sector[0].upper()
     if sector not in data[colony_name]["sectors"]:
         data[colony_name]["sectors"][sector] = {}
         data[colony_name]["sectors"][sector]["plots"] = {}
