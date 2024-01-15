@@ -33,7 +33,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     s_no = row[0].value
     if not s_no:
         continue
-    print(s_no)
     try:
         if row[1].font.color.rgb == "FFFF0000":
             continue
@@ -41,7 +40,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         pass
     p_no = row[1].value
     print(p_no)
-
     party = row[2].value
     if not party:
         continue
@@ -84,10 +82,7 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         if not date:
             date = headings[col+2]
         #print(cr_no, date, amount)
-        print(amount)
         total = total+amount
-        if not booking_date:
-            booking_date = date
         r = {
             "reciept_number": 0,
             "date": "",
@@ -97,16 +92,29 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
             }
         r["reciept_number"] = cr_no
         if isinstance(date, str):
+            date_str = date
             try:
-                date = dt.strptime(date, "%d-%m-%Y")
+                date = dt.strptime(date_str , "%d-%m-%Y")
             except ValueError as v:
-                date = date.split("/")[0]
-                date = dt.strptime(date, "%d-%m-%Y")
+                try:
+                    date = date_str.split("/")[0]
+                    date = dt.strptime(date, "%d-%m-%Y")
+                except ValueError:
+                    date = date_str.split("/")[-1] # last one 
+                    date = dt.strptime(date, "%d-%m-%Y")
+        if not booking_date:
+            booking_date = date
+        print(date)
         r["date"] = date.strftime("%Y-%m-%d")
         r["amount"] = amount
         reciepts.append(r)
     r_total = row[col].value
     t_amount = row[col+1].value
+    remark = row[col+3].value
+    status = "booked"
+    if remark:
+        if "ok" in str(remark).lower():
+            status = "registered"
     if len(reciepts) == 1 and t_amount == reciepts[0]["amount"]:
         emi=False
     else:
@@ -145,13 +153,14 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     template["customer"]["name"] = party
     template["customer"]["address"] = address
     template["customer"]["mobile_no"] = mobile_no
-    template["status"] = "booked"
+    template["status"] = status
     template["is_emi"] = emi
     template["reciept_entry"] = reciepts
     template["advisor"] = advisor.lower().strip().capitalize()
     if not booking_date:
         booking_date_missing.append(p_no)
         continue
+    print(booking_date)
     template["date"] = booking_date.strftime("%Y-%m-%d")
     template["files"] = []
     #print(json.dumps(template, indent=4))
@@ -161,12 +170,10 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     if sector not in data[colony_name]["sectors"]:
         data[colony_name]["sectors"][sector] = {}
         data[colony_name]["sectors"][sector]["plots"] = {}
-    print(template)
     data[colony_name]["sectors"][sector]["plots"][pno] = template
 
 with open("data.json", "w+") as f:
     f.write(json.dumps(data, indent=4))
-
 print("total missing: ")
 print(" ".join(t_amount_missing))
 print("plot size missing: ")
