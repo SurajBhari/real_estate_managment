@@ -176,6 +176,11 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     if sector not in data[colony_name]["sectors"]:
         data[colony_name]["sectors"][sector] = {}
         data[colony_name]["sectors"][sector]["plots"] = {}
+    if pno in data[colony_name]["sectors"][sector]["plots"]:
+        for x in range(1,11):
+            if pno+"-"+str(x) not in data[colony_name]["sectors"][sector]["plots"]:
+                pno = pno+"-"+str(x)
+                break
     data[colony_name]["sectors"][sector]["plots"][pno] = template
 
 with open("data.json", "w+") as f:
