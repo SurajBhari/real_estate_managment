@@ -26,35 +26,73 @@
         <option value="">Select Plot</option>
     </select> 
     <input type="text" id="plotinput" name="plotinput" placeholder="Plot"> </br> </br>
-    <label>Status:</label>
-    <select id="status" name="status">
-        <option value="">Select Status</option>
-        {% for status in available_status %}
-            <option value="{{ status }}">{{ status }}</option> 
-        {% endfor %}
-    </select> </br>
-    <label >Size:</label></br>
-    <input type="number" id="size_width" name="size_width" placeholder="Width"> 
-    <input type="number" id="size_length" name="size_length" placeholder="Length"> </br> </br>
-    <label>Pricing Details:</label></br>
-    <input type="number" id="rate" name="rate" placeholder="Rate"> </br>
-    <input type="number" id="price" name="price" placeholder="Price">
-    <input type="number" id="deal_price" name="deal_price" placeholder="Deal Price"> </br>
-    <input type="number" id="booking_amount" name="booking_amount" placeholder="Booking Amount"> </br></br> 
-    <label>Customer Details:</label></br>
-    <input type="text" id="customer_name" name="customer_name" placeholder="Customer Name"> 
-    <input type="number" id="customer_phone" name="customer_phone" placeholder="Customer Phone"> 
-    <input type="text" id="customer_address" name="customer_address" placeholder="Customer Address"> </br> </br> 
+    <fieldset>
+        <legend>Status Information</legend>
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option value="" disabled selected>Select Status</option>
+            {% for status in available_status %}
+                <option value="{{ status }}">{{ status }}</option> 
+            {% endfor %}
+        </select>
+    </fieldset>
     
-    <select id="advisor" name="advisor">
-        <option value="">Select Advisor</option>
-        {% for advisor in advisors %}
-            <option value="{{ advisor }}">{{ advisor }}</option>
-        {% endfor %}
-    </select> 
-    <input type="text" id="newadvisor" name="newadvisor" placeholder="New Advisor"> </br> </br>
-    <input type="number" id="incentive" name="incentive" placeholder="Incentive"> </br>
-</br> </br> 
+    <fieldset>
+        <legend>Size Information</legend>
+        <label for="size_width">Width:</label>
+        <input type="number" id="size_width" name="size_width">
+        
+        <label for="size_length">Length:</label>
+        <input type="number" id="size_length" name="size_length">
+    </fieldset>
+    
+    <fieldset>
+        <legend>Pricing Details</legend>
+        <label for="rate">Rate:</label>
+        <input type="number" id="rate" name="rate">
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price">
+        
+        <label for="deal_price">Deal Price:</label>
+        <input type="number" id="deal_price" name="deal_price">
+        
+        <label for="booking_amount">Booking Amount:</label>
+        <input type="number" id="booking_amount" name="booking_amount">
+    </fieldset>
+    
+    <fieldset>
+        <legend>Customer Details</legend>
+        <label for="customer_name">Name:</label>
+        <input type="text" id="customer_name" name="customer_name">
+        
+        <label for="customer_phone">Phone:</label>
+        <input type="number" id="customer_phone" name="customer_phone">
+        
+        <label for="customer_address">Address:</label>
+        <input type="text" id="customer_address" name="customer_address">
+    </fieldset>
+    
+    <fieldset>
+        <legend>Advisor Information</legend>
+        <label for="advisor">Advisor:</label>
+        <select id="advisor" name="advisor">
+            <option value="" disabled selected>Select Advisor</option>
+            {% for advisor in advisors %}
+                <option value="{{ advisor }}">{{ advisor }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="newadvisor">New Advisor:</label>
+        <input type="text" id="newadvisor" name="newadvisor">
+    </fieldset>
+    
+    <fieldset>
+        <legend>Incentive Information</legend>
+        <label for="incentive">Incentive:</label>
+        <input type="number" id="incentive" name="incentive">
+    </fieldset>
+    
     
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" name="emi" id="emi">
