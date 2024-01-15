@@ -221,7 +221,7 @@
             const selectedPrice = priceDropdown.value;
             
             if (plotsDropdown.selectedIndex){
-                tabular_data = tabular_data.filter(row => row[0].startsWith(selectedPlot));
+                tabular_data = tabular_data.filter(row => row[0] === selectedPlot);
             }
             // case insensitive
             if (advisorsDropdown.selectedIndex){
