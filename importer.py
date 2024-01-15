@@ -70,6 +70,12 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         if isinstance(cr_no, str):
             if "/" in cr_no:
                 cr_no = cr_no.split("/")[0]
+            if "\\" in cr_no:
+                cr_no = cr_no.split("\\")[0] 
+            if "," in cr_no:
+                cr_no = cr_no.split(",")[0]
+            if " " in cr_no:
+                cr_no = cr_no.split(" ")[0]
         if not cr_no:
             cr_no = random.randint(1000, 9999)
             while cr_no in known_r_no:
@@ -164,7 +170,7 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     template["date"] = booking_date.strftime("%Y-%m-%d")
     template["files"] = []
     #print(json.dumps(template, indent=4))
-    sector = p_no.split("-")
+    sector = p_no.split("-").upper()
     pno = sector[1]
     sector = sector[0]
     if sector not in data[colony_name]["sectors"]:
