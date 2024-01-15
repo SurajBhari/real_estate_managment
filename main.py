@@ -394,7 +394,11 @@ def search():
 @app.route("/get_backend_data/<project>/<sector>/<plot>")
 def get_backend_data(project, sector, plot):
     data = get_data()
-    return jsonify(data[project]['sectors'][sector]['plots'][plot])
+    try:
+        return jsonify(data[project]['sectors'][sector]['plots'][plot])
+    except KeyError:
+        # return template
+        return jsonify(template)
 
 @app.route("/get_advisor_projects/<advisor>")
 @app.route("/get_advisor_projects/")
