@@ -39,7 +39,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     except AttributeError as e:
         pass
     p_no = row[1].value
-    print(p_no)
     party = row[2].value
     if not party:
         continue
@@ -76,10 +75,8 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
                 cr_no = cr_no.split(",")[0]
             if " " in cr_no:
                 cr_no = cr_no.split(" ")[0]
-        if not cr_no:
-            cr_no = random.randint(1000, 9999)
-            while cr_no in known_r_no:
-                cr_no = random.randint(1000, 9999)
+            cr_no = int(cr_no)
+        
         known_r_no.append(cr_no)
         date = row[col + 1].value
         amount = row[col + 2].value
@@ -110,7 +107,6 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
                     date = dt.strptime(date, "%d-%m-%Y")
         if not booking_date:
             booking_date = date
-        print(date)
         r["date"] = date.strftime("%Y-%m-%d")
         r["amount"] = amount
         reciepts.append(r)
@@ -127,7 +123,7 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
         emi=True
     if not total == r_total:
         print("Total mismatch")
-        print(total, r_total)
+        print(total, r_total, p_no)
         break
     if not t_amount:
         t_amount_missing.append(p_no)
@@ -166,12 +162,12 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
     if not booking_date:
         booking_date_missing.append(p_no)
         continue
-    print(booking_date)
     template["date"] = booking_date.strftime("%Y-%m-%d")
     template["files"] = []
-    #print(json.dumps(template, indent=4))
     sector = p_no.split("-")
     pno = sector[1]
+    if pno.startswith("0"):
+        pno = pno[1:]
     sector = sector[0].upper()
     if sector not in data[colony_name]["sectors"]:
         data[colony_name]["sectors"][sector] = {}
@@ -182,6 +178,32 @@ for row in ws.iter_rows(min_row=2, max_row=ws.max_row, min_col=1, max_col=ws.max
                 pno = pno+"-"+str(x)
                 break
     data[colony_name]["sectors"][sector]["plots"][pno] = template
+
+known_cr_no = {}
+for colony in data:
+    known_cr_no[colony] = []
+    for sector in data[colony]["sectors"]:
+        for plot in data[colony]["sectors"][sector]["plots"]:
+            for reciept in data[colony]["sectors"][sector]["plots"][plot]["reciept_entry"]:
+                if reciept["reciept_number"] is not None:
+                    known_cr_no[colony].append(int(reciept["reciept_number"]))
+
+for colony in data:
+    maximum_known_cr_no = max(known_cr_no[colony]) + 151
+    for sector in data[colony]["sectors"]:
+        for plot in data[colony]["sectors"][sector]["plots"]:
+            for reciept in data[colony]["sectors"][sector]["plots"][plot]["reciept_entry"]:
+                if reciept["reciept_number"] is None:
+                    maximum_known_cr_no += 1
+                    reciept["reciept_number"] = maximum_known_cr_no
+                    print(f"{sector}-{plot} {reciept['date']}", maximum_known_cr_no)
+                    known_cr_no[colony].append(maximum_known_cr_no)
+"""
+missing = []
+for x in range(min(known_cr_no), max(known_cr_no)):
+    if x not in known_cr_no:
+        missing.append(x)
+print(f"Missing - {' '.join([str(x) for x in missing])}")"""
 
 with open("data.json", "w+") as f:
     f.write(json.dumps(data, indent=4))
