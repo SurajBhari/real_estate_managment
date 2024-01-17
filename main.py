@@ -395,11 +395,11 @@ def search():
 def get_backend_data(project, sector, plot):
     data = get_data()
     try:
-        return jsonify(data[project]['sectors'][sector]['plots'][plot])
+        data = data[project]['sectors'][sector]['plots'][plot]
     except KeyError:
-        # return template
-        return jsonify(template)
-
+        data = {}
+    data['next_reciept_number'] = _get_next_reciept_number(project)
+    return jsonify(data)
 @app.route("/get_advisor_projects/<advisor>")
 @app.route("/get_advisor_projects/")
 def get_advisor_projects(advisor="None"):
@@ -575,52 +575,51 @@ def _get_projects():
         projects.append(project)
     return projects
 
-@app.route("/print_receipt/<rnumber>")
-def print_receipt(rnumber:int):
+@app.route("/print_receipt/<project>/<rnumber>")
+def print_receipt(project:str, rnumber:int):
     # first find the reciept number in the json file
     data = get_data()
     found = False
-    for project in data:
-        for sector in data[project]['sectors']:
-            for plot in data[project]['sectors'][sector]['plots']:
-                for receipt in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
-                    if str(receipt['reciept_number']) == str(rnumber):
-                        found = True
-                        rno = receipt['reciept_number']
-                        ammount = receipt['amount']
-                        mode = receipt['mode']
-                        if mode == "cheque":
-                            mode = f"Cheque {receipt['cheque']['bank']}/{receipt['cheque']['cheque_no']}"
-                        date = receipt['date']
-                        size = [str(x) for x in data[project]['sectors'][sector]['plots'][plot]['size']]
-                        size = "X".join(size)
-                        try:
-                            address = data[project]['address']
-                        except KeyError:
-                            address = ""
-                        mobile_no = "9610449712"
-                        company_name = "Monarch Buildestate Pvt. Ltd."
-                        project_name = project
-                        customer = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
-                        
-                        
-                        return render_template(
-                            'home/print_receipt.html',
-                            receipt=receipt,
-                            mobile_no=mobile_no,
-                            company_name=company_name,
-                            project_name=project_name,
-                            address=address,
-                            rno=rno,
-                            ammount=ammount,
-                            mode=mode,
-                            date=date,
-                            sector=sector,
-                            plot=plot,
-                            size=size,
-                            customer=customer,
-                            title="Print Receipt"
-                        )
+    for sector in data[project]['sectors']:
+        for plot in data[project]['sectors'][sector]['plots']:
+            for receipt in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
+                if str(receipt['reciept_number']) == str(rnumber):
+                    found = True
+                    rno = receipt['reciept_number']
+                    ammount = receipt['amount']
+                    mode = receipt['mode']
+                    if mode == "cheque":
+                        mode = f"Cheque {receipt['cheque']['bank']}/{receipt['cheque']['cheque_no']}"
+                    date = receipt['date']
+                    size = [str(x) for x in data[project]['sectors'][sector]['plots'][plot]['size']]
+                    size = "X".join(size)
+                    try:
+                        address = data[project]['address']
+                    except KeyError:
+                        address = ""
+                    mobile_no = "9610449712"
+                    company_name = "Monarch Buildestate Pvt. Ltd."
+                    project_name = project
+                    customer = data[project]['sectors'][sector]['plots'][plot]['customer']['name']
+                    
+                    
+                    return render_template(
+                        'home/print_receipt.html',
+                        receipt=receipt,
+                        mobile_no=mobile_no,
+                        company_name=company_name,
+                        project_name=project_name,
+                        address=address,
+                        rno=rno,
+                        ammount=ammount,
+                        mode=mode,
+                        date=date,
+                        sector=sector,
+                        plot=plot,
+                        size=size,
+                        customer=customer,
+                        title="Print Receipt"
+                    )
                         
     if not found:
         return "No Receipt Found"
@@ -668,18 +667,18 @@ def receipt():
         'home/receipt.html', 
         data=new_data,
         available_payment_method=available_payment_method,
-        next_reciept_number = _get_next_reciept_number(),
         title="Reciept"
     )
 
-def _get_next_reciept_number():
+def _get_next_reciept_number(project):
     data = get_data()
     reciept_numbers = []
-    for project in data:
-        for sector in data[project]['sectors']:
-            for plot in data[project]['sectors'][sector]['plots']:
-                for reciept in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
-                    reciept_numbers.append(int(reciept['reciept_number']))
+    if not project:
+        return 1
+    for sector in data[project]['sectors']:
+        for plot in data[project]['sectors'][sector]['plots']:
+            for reciept in data[project]['sectors'][sector]['plots'][plot]['reciept_entry']:
+                reciept_numbers.append(int(reciept['reciept_number']))
     if not reciept_numbers:
         return 1
     return max(reciept_numbers) + 1
