@@ -110,6 +110,9 @@
     <input type="submit" value="Submit"> </br>
 </form>
 <script>
+    document.getElementById("newadvisor").addEventListener('input', function() {
+        document.getElementById("advisor").value = '';
+    });
     document.getElementById("plotinput").addEventListener('input', function() {
         document.getElementById("plot").value = '';
         fillForm();
