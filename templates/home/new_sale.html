@@ -25,7 +25,7 @@
     <select id="plot" name="plot" onchange="fillForm()">
         <option value="">Select Plot</option>
     </select> 
-    <input type="text" id="plotinput" name="plotinput" placeholder="Plot"> </br> </br>
+    <input type="text" id="plotinput" name="plotinput" placeholder="Plot" onchange="fillForm()"> </br> </br>
     <fieldset>
         <legend>Status Information</legend>
         <label for="status">Status:</label>
@@ -187,7 +187,7 @@
                 const plot = data;
                 // plot = data[selectedProperty].sectors[selectedSector].plots[selectedPlot];
                 // if plot.status.toLowercase() in ['available', 'not for sale', 'held'] then clear all the field and return
-                if (['available', 'not for sale', 'held'].includes(plot.status.toLowerCase())) {
+                if ((['available', 'not for sale', 'held'].includes(plot.status.toLowerCase())) || (!plot.status)) {
                     document.getElementById('size_width').value = '';
                     document.getElementById('size_length').value = '';
                     document.getElementById('rate').value = '';
