@@ -187,7 +187,7 @@
                 const plot = data;
                 // plot = data[selectedProperty].sectors[selectedSector].plots[selectedPlot];
                 // if plot.status.toLowercase() in ['available', 'not for sale', 'held'] then clear all the field and return
-                if ((['available', 'not for sale', 'held'].includes(plot.status.toLowerCase())) || (!plot.status)) {
+                if ( (!plot.status) || (['available', 'not for sale', 'held'].includes(plot.status.toLowerCase())) ) {
                     document.getElementById('size_width').value = '';
                     document.getElementById('size_length').value = '';
                     document.getElementById('rate').value = '';
