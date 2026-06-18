@@ -1,5 +1,9 @@
-
 # Real Estate Management System
+
+![Python](https://img.shields.io/badge/Python-3670A0?style=flat&logo=python&logoColor=ffdd54)
+![Flask](https://img.shields.io/badge/Flask-000000?style=flat&logo=flask&logoColor=white)
+![PyOTP](https://img.shields.io/badge/2FA-PyOTP-4B8BBE?style=flat)
+![PyInstaller](https://img.shields.io/badge/PyInstaller-FFD43B?style=flat&logo=python&logoColor=black)
 
 Experience a comprehensive system with both frontend and backend capabilities designed to streamline the management of real estate sales.
 
