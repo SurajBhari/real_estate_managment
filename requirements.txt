@@ -4,4 +4,5 @@ Faker
 pytz
 pyotp
 pyarmor
-cryptographygunicorn
+cryptography
+gunicorn
