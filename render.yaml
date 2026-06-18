@@ -5,3 +5,6 @@ services:
     plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn main:app --bind 0.0.0.0:$PORT --timeout 120
+    envVars:
+      - key: DEMO_MODE
+        value: "1"

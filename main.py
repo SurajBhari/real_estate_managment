@@ -8,6 +8,7 @@ import pyotp
 from validate import validate_otp as validate
 import sqlite3
 import time
+import shutil
 from copy import deepcopy
 from datetime import datetime
 import json
@@ -16,6 +17,32 @@ app = Flask(__name__)
 
 # Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = '1a2b3c4d5e6d7g8h9i10'
+
+# ---- Demo mode -------------------------------------------------------------
+# When DEMO_MODE=1, the app runs as a public sandbox: the login OTP is shown
+# (and pre-filled) on the login page, and the dataset is reset to a pristine
+# copy on every new login / logout so visitors can't permanently change data.
+DEMO_MODE = os.environ.get("DEMO_MODE", "0") == "1"
+DEMO_SECRET = "JBSWY3DPEHPK3PXP"  # same default TOTP secret validate.py uses
+
+
+def reset_demo_data():
+    """Restore the pristine demo dataset (demo edits never persist)."""
+    if DEMO_MODE and os.path.exists("demo_data.json"):
+        shutil.copyfile("demo_data.json", "data.json")
+
+
+def validate_login(password):
+    # In demo mode accept a wider TOTP window so the shown code keeps working
+    # for ~a minute (avoids "expired" frustration); otherwise normal validation.
+    if DEMO_MODE:
+        return pyotp.TOTP(DEMO_SECRET).verify(str(password), valid_window=1)
+    return validate(password)
+
+
+# Ensure a data file exists at startup in demo mode.
+if DEMO_MODE:
+    reset_demo_data()
 
 
 available_status = ["available", "Not for sale", "held", "booked", "registered", "agreement"]
@@ -60,7 +87,9 @@ template = {
 def login():
     if request.method == 'POST' and 'password' in request.form:
         password = request.form['password']
-        if validate(password):
+        if validate_login(password):
+            if DEMO_MODE:
+                reset_demo_data()  # fresh sandbox for each new session
             session['loggedin'] = True
             session['username'] = 'admin'
             session['lastused'] = time.time()
@@ -68,7 +97,8 @@ def login():
         else:
             flash("Incorrect password!", "danger")
     print(f"If you are using default then the password is -> {pyotp.TOTP('JBSWY3DPEHPK3PXP').now()}")
-    return render_template('auth/login.html', title="Login")
+    demo_otp = pyotp.TOTP(DEMO_SECRET).now() if DEMO_MODE else None
+    return render_template('auth/login.html', title="Login", demo=DEMO_MODE, demo_otp=demo_otp)
 
 def _get_available_status():
     return available_status
@@ -126,7 +156,8 @@ def logout():
     session.pop('id', None)
     session.pop('username', None)
     session.pop('lastused', None)
-
+    if DEMO_MODE:
+        reset_demo_data()  # revert any changes the demo visitor made
     return redirect(url_for('login'))
 
 def get_data():

@@ -1,0 +1,1187 @@
+{
+    "Monarch Residency": {
+        "sectors": {
+            "A": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            10,
+                            32
+                        ],
+                        "rate": 212,
+                        "price": 67840,
+                        "deal_price": 67840,
+                        "booking_amount": 44954,
+                        "incentive": 6,
+                        "customer": {
+                            "name": "April Price",
+                            "phone": "001-993-527-6695",
+                            "address": "333 Guerrero Knoll\nEvelynfort, MA 06800"
+                        },
+                        "status": "registered",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 1,
+                                "date": "2019-06-01",
+                                "amount": 44954,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Miranda Johnson",
+                        "date": "2019-06-01",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "2": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "3": {
+                        "size": [
+                            15,
+                            35
+                        ],
+                        "rate": 126,
+                        "price": 66150,
+                        "deal_price": 66150,
+                        "booking_amount": 66150,
+                        "incentive": 14,
+                        "customer": {
+                            "name": "Amber Jones",
+                            "phone": "(249)596-4810x224",
+                            "address": "907 Bridges Glens Apt. 318\nDayland, OR 20328"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 4,
+                                "date": "2022-07-25",
+                                "amount": 66150,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Edward Johnston",
+                        "date": "2022-07-25",
+                        "files": []
+                    }
+                }
+            },
+            "B": {
+                "plots": {
+                    "0": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            15,
+                            33
+                        ],
+                        "rate": 201,
+                        "price": 99495,
+                        "deal_price": 99495,
+                        "booking_amount": 94888,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Leah Gallagher",
+                            "phone": "4017863285",
+                            "address": "00352 Martinez Ramp Apt. 617\nWrightport, FM 10504"
+                        },
+                        "status": "registered",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 6,
+                                "date": "2018-12-19",
+                                "amount": 94888,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Allen Brown",
+                        "date": "2018-12-19",
+                        "files": []
+                    }
+                }
+            },
+            "C": {
+                "plots": {
+                    "0": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            15,
+                            39
+                        ],
+                        "rate": 175,
+                        "price": 102375,
+                        "deal_price": 102375,
+                        "booking_amount": 84287,
+                        "incentive": 10,
+                        "customer": {
+                            "name": "Jeffery Holloway",
+                            "phone": "976.409.4766x04452",
+                            "address": "1130 Steven Springs Suite 878\nMatthewland, AL 59942"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 8,
+                                "date": "2017-12-13",
+                                "amount": 84287,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Jeffrey Miller",
+                        "date": "2017-12-13",
+                        "files": []
+                    },
+                    "2": {
+                        "size": [
+                            17,
+                            42
+                        ],
+                        "rate": 141,
+                        "price": 100674,
+                        "deal_price": 100674,
+                        "booking_amount": 41358,
+                        "incentive": 11,
+                        "customer": {
+                            "name": "Dawn Nelson",
+                            "phone": "690.720.2029x48349",
+                            "address": "39587 Michael Manors Apt. 926\nWest Johnport, CT 50439"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 9,
+                                "date": "2017-11-18",
+                                "amount": 41358,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Jordan Wright",
+                        "date": "2017-11-18",
+                        "files": []
+                    },
+                    "3": {
+                        "size": [
+                            22,
+                            39
+                        ],
+                        "rate": 121,
+                        "price": 103818,
+                        "deal_price": 103818,
+                        "booking_amount": 103818,
+                        "incentive": 10,
+                        "customer": {
+                            "name": "Nicholas Sanders",
+                            "phone": "(534)423-4612x8856",
+                            "address": "1346 Le Road\nRothfurt, HI 25337"
+                        },
+                        "status": "registered",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 10,
+                                "date": "2016-02-23",
+                                "amount": 103818,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Glenn Weaver",
+                        "date": "2016-02-23",
+                        "files": []
+                    },
+                    "4": {
+                        "size": [
+                            12,
+                            49
+                        ],
+                        "rate": 125,
+                        "price": 73500,
+                        "deal_price": 73500,
+                        "booking_amount": 308,
+                        "incentive": 11,
+                        "customer": {
+                            "name": "Sandra Cook",
+                            "phone": "+1-933-561-2948",
+                            "address": "667 Mcconnell Divide Apt. 176\nPort Donaldmouth, MS 51671"
+                        },
+                        "status": "registered",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 11,
+                                "date": "2016-03-25",
+                                "amount": 308,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Melissa Williams",
+                        "date": "2016-03-25",
+                        "files": []
+                    }
+                }
+            },
+            "D": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            24,
+                            50
+                        ],
+                        "rate": 155,
+                        "price": 186000,
+                        "deal_price": 186000,
+                        "booking_amount": 186000,
+                        "incentive": 11,
+                        "customer": {
+                            "name": "Robert Williams",
+                            "phone": "(786)956-5076",
+                            "address": "066 Mitchell Avenue Apt. 656\nWest Seanbury, NE 50239"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 12,
+                                "date": "2021-08-21",
+                                "amount": 186000,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Natasha Mckee",
+                        "date": "2021-08-21",
+                        "files": []
+                    }
+                }
+            },
+            "E": {
+                "plots": {
+                    "0": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            11,
+                            44
+                        ],
+                        "rate": 194,
+                        "price": 93896,
+                        "deal_price": 93896,
+                        "booking_amount": 93896,
+                        "incentive": 13,
+                        "customer": {
+                            "name": "Ashley Sanders",
+                            "phone": "527.262.8404",
+                            "address": "451 Vasquez Centers Suite 399\nJodyton, VI 24186"
+                        },
+                        "status": "held",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 14,
+                                "date": "2020-07-17",
+                                "amount": 93896,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Bryan Reilly",
+                        "date": "2020-07-17",
+                        "files": []
+                    }
+                }
+            }
+        },
+        "address": "67703 Matthew Manors Apt. 719\nSouth Juliaberg, FM 96415"
+    },
+    "Aashiyana": {
+        "sectors": {
+            "A": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            15,
+                            28
+                        ],
+                        "rate": 230,
+                        "price": 96600,
+                        "deal_price": 96600,
+                        "booking_amount": 18580,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Nicholas Reilly Jr.",
+                            "phone": "(397)365-1603x97312",
+                            "address": "0217 Gonzalez Brook Apt. 960\nLake Jacquelinechester, NH 23995"
+                        },
+                        "status": "agreement",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 15,
+                                "date": "2016-09-15",
+                                "amount": 18580,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Sherry Jenkins",
+                        "date": "2016-09-15",
+                        "files": []
+                    }
+                }
+            },
+            "B": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            15,
+                            37
+                        ],
+                        "rate": 234,
+                        "price": 129870,
+                        "deal_price": 129870,
+                        "booking_amount": 83446,
+                        "incentive": 11,
+                        "customer": {
+                            "name": "Mr. Michael Navarro",
+                            "phone": "+1-937-534-6890x450",
+                            "address": "Unit 9330 Box 1291\nDPO AE 35869"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 16,
+                                "date": "2020-02-02",
+                                "amount": 83446,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Jeffrey Price",
+                        "date": "2020-02-02",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            17,
+                            27
+                        ],
+                        "rate": 127,
+                        "price": 58293,
+                        "deal_price": 58293,
+                        "booking_amount": 58293,
+                        "incentive": 12,
+                        "customer": {
+                            "name": "Crystal Jones",
+                            "phone": "(559)628-0150x16835",
+                            "address": "16618 Jeremiah Forges Suite 061\nJennifermouth, WV 49914"
+                        },
+                        "status": "registered",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 17,
+                                "date": "2021-05-08",
+                                "amount": 58293,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Michael Hayes",
+                        "date": "2021-05-08",
+                        "files": []
+                    },
+                    "2": {
+                        "size": [
+                            25,
+                            41
+                        ],
+                        "rate": 127,
+                        "price": 130175,
+                        "deal_price": 130175,
+                        "booking_amount": 130175,
+                        "incentive": 12,
+                        "customer": {
+                            "name": "Emily Waller",
+                            "phone": "221-643-8440x1724",
+                            "address": "87731 Colleen Ramp\nJohnsonport, IN 76486"
+                        },
+                        "status": "held",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 18,
+                                "date": "2023-11-08",
+                                "amount": 130175,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Katherine Fisher",
+                        "date": "2023-11-08",
+                        "files": []
+                    },
+                    "3": {
+                        "size": [
+                            21,
+                            35
+                        ],
+                        "rate": 133,
+                        "price": 97755,
+                        "deal_price": 97755,
+                        "booking_amount": 97755,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Matthew Barton",
+                            "phone": "+1-702-235-1622x95598",
+                            "address": "74572 Jeffrey Lodge\nSouth Patriciafurt, WV 75201"
+                        },
+                        "status": "registered",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 19,
+                                "date": "2022-08-05",
+                                "amount": 97755,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Allen Brown",
+                        "date": "2022-08-05",
+                        "files": []
+                    }
+                }
+            },
+            "C": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            25,
+                            48
+                        ],
+                        "rate": 110,
+                        "price": 132000,
+                        "deal_price": 132000,
+                        "booking_amount": 110629,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Mr. Michael Navarro",
+                            "phone": "+1-937-534-6890x450",
+                            "address": "Unit 9330 Box 1291\nDPO AE 35869"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 20,
+                                "date": "2018-08-24",
+                                "amount": 110629,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Christine Simpson",
+                        "date": "2018-08-24",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            21,
+                            44
+                        ],
+                        "rate": 137,
+                        "price": 126588,
+                        "deal_price": 126588,
+                        "booking_amount": 53696,
+                        "incentive": 15,
+                        "customer": {
+                            "name": "Adam Walters",
+                            "phone": "001-830-554-5085",
+                            "address": "4563 Jones Islands\nWest Andreaburgh, IA 34064"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 21,
+                                "date": "2020-01-01",
+                                "amount": 53696,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Carrie Meyer",
+                        "date": "2020-01-01",
+                        "files": []
+                    },
+                    "2": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "3": {
+                        "size": [
+                            19,
+                            30
+                        ],
+                        "rate": 181,
+                        "price": 103170,
+                        "deal_price": 103170,
+                        "booking_amount": 103170,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Matthew Adams",
+                            "phone": "552.471.0941x7077",
+                            "address": "3217 Jones Meadows\nNorth Autumn, DE 46559"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 23,
+                                "date": "2023-10-25",
+                                "amount": 103170,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Jeffrey Williams",
+                        "date": "2023-10-25",
+                        "files": []
+                    },
+                    "4": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    }
+                }
+            },
+            "D": {
+                "plots": {
+                    "0": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "2": {
+                        "size": [
+                            10,
+                            43
+                        ],
+                        "rate": 167,
+                        "price": 71810,
+                        "deal_price": 71810,
+                        "booking_amount": 71810,
+                        "incentive": 9,
+                        "customer": {
+                            "name": "Vanessa Davis",
+                            "phone": "+1-667-515-5742x90027",
+                            "address": "7735 Hensley Estates\nPort Ronaldmouth, TN 43699"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 27,
+                                "date": "2017-05-16",
+                                "amount": 71810,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Sherry Jenkins",
+                        "date": "2017-05-16",
+                        "files": []
+                    }
+                }
+            },
+            "E": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            18,
+                            43
+                        ],
+                        "rate": 203,
+                        "price": 157122,
+                        "deal_price": 157122,
+                        "booking_amount": 74029,
+                        "incentive": 13,
+                        "customer": {
+                            "name": "Eric Hernandez",
+                            "phone": "(471)372-6370x2809",
+                            "address": "046 Ferguson Fields\nLake Emilyborough, MO 61998"
+                        },
+                        "status": "booked",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 28,
+                                "date": "2020-11-15",
+                                "amount": 74029,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Miranda Johnson",
+                        "date": "2020-11-15",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    }
+                }
+            }
+        },
+        "address": "PSC 5207, Box 4860\nAPO AA 86092"
+    },
+    "Eden Garden": {
+        "sectors": {
+            "A": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            15,
+                            43
+                        ],
+                        "rate": 238,
+                        "price": 153510,
+                        "deal_price": 153510,
+                        "booking_amount": 153510,
+                        "incentive": 6,
+                        "customer": {
+                            "name": "Miguel Joyce",
+                            "phone": "(895)590-8891",
+                            "address": "34049 Marc Island\nJasonchester, AK 20158"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 30,
+                                "date": "2017-04-17",
+                                "amount": 153510,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Allen Brown",
+                        "date": "2017-04-17",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    }
+                }
+            },
+            "B": {
+                "plots": {
+                    "0": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "1": {
+                        "size": [
+                            24,
+                            33
+                        ],
+                        "rate": 104,
+                        "price": 82368,
+                        "deal_price": 82368,
+                        "booking_amount": 82368,
+                        "incentive": 7,
+                        "customer": {
+                            "name": "Stacey Bush",
+                            "phone": "422.944.7924x14982",
+                            "address": "PSC 4406, Box 1212\nAPO AE 16393"
+                        },
+                        "status": "held",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 33,
+                                "date": "2016-04-06",
+                                "amount": 82368,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Tommy Murray",
+                        "date": "2016-04-06",
+                        "files": []
+                    },
+                    "2": {
+                        "size": [
+                            15,
+                            27
+                        ],
+                        "rate": 192,
+                        "price": 77760,
+                        "deal_price": 77760,
+                        "booking_amount": 77760,
+                        "incentive": 9,
+                        "customer": {
+                            "name": "Robert Williams",
+                            "phone": "(786)956-5076",
+                            "address": "066 Mitchell Avenue Apt. 656\nWest Seanbury, NE 50239"
+                        },
+                        "status": "agreement",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 34,
+                                "date": "2018-07-14",
+                                "amount": 77760,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Michael Hayes",
+                        "date": "2018-07-14",
+                        "files": []
+                    },
+                    "3": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "4": {
+                        "size": [
+                            18,
+                            49
+                        ],
+                        "rate": 232,
+                        "price": 204624,
+                        "deal_price": 204624,
+                        "booking_amount": 204624,
+                        "incentive": 8,
+                        "customer": {
+                            "name": "Keith Guzman",
+                            "phone": "637-233-2864",
+                            "address": "5821 Wilson Garden Apt. 670\nPort Madisonport, GA 34170"
+                        },
+                        "status": "agreement",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 36,
+                                "date": "2015-10-18",
+                                "amount": 204624,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Regina Jackson",
+                        "date": "2015-10-18",
+                        "files": []
+                    }
+                }
+            },
+            "C": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            14,
+                            30
+                        ],
+                        "rate": 109,
+                        "price": 45780,
+                        "deal_price": 45780,
+                        "booking_amount": 36420,
+                        "incentive": 9,
+                        "customer": {
+                            "name": "Matthew Barton",
+                            "phone": "+1-702-235-1622x95598",
+                            "address": "74572 Jeffrey Lodge\nSouth Patriciafurt, WV 75201"
+                        },
+                        "status": "booked",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 37,
+                                "date": "2015-09-22",
+                                "amount": 36420,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Matthew White",
+                        "date": "2015-09-22",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "2": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "3": {
+                        "size": [
+                            15,
+                            35
+                        ],
+                        "rate": 243,
+                        "price": 127575,
+                        "deal_price": 127575,
+                        "booking_amount": 127575,
+                        "incentive": 15,
+                        "customer": {
+                            "name": "April Price",
+                            "phone": "001-993-527-6695",
+                            "address": "333 Guerrero Knoll\nEvelynfort, MA 06800"
+                        },
+                        "status": "booked",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 40,
+                                "date": "2015-08-12",
+                                "amount": 127575,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Benjamin French",
+                        "date": "2015-08-12",
+                        "files": []
+                    }
+                }
+            },
+            "D": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            14,
+                            44
+                        ],
+                        "rate": 119,
+                        "price": 73304,
+                        "deal_price": 73304,
+                        "booking_amount": 39131,
+                        "incentive": 15,
+                        "customer": {
+                            "name": "Nicole Tate",
+                            "phone": "481-349-8258x1422",
+                            "address": "PSC 7243, Box 8177\nAPO AA 51343"
+                        },
+                        "status": "held",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 41,
+                                "date": "2020-12-17",
+                                "amount": 39131,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "John Griffin",
+                        "date": "2020-12-17",
+                        "files": []
+                    }
+                }
+            },
+            "E": {
+                "plots": {
+                    "0": {
+                        "size": [
+                            13,
+                            43
+                        ],
+                        "rate": 246,
+                        "price": 137514,
+                        "deal_price": 137514,
+                        "booking_amount": 93651,
+                        "incentive": 8,
+                        "customer": {
+                            "name": "Leah Callahan",
+                            "phone": "724.342.0049x049",
+                            "address": "63243 Campbell Highway Apt. 400\nPort Lorishire, PR 28612"
+                        },
+                        "status": "registered",
+                        "is_emi": true,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 42,
+                                "date": "2018-05-25",
+                                "amount": 93651,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Tommy Murray",
+                        "date": "2018-05-25",
+                        "files": []
+                    },
+                    "1": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "2": {
+                        "size": [
+                            13,
+                            28
+                        ],
+                        "rate": 143,
+                        "price": 52052,
+                        "deal_price": 52052,
+                        "booking_amount": 52052,
+                        "incentive": 13,
+                        "customer": {
+                            "name": "Monique Martin",
+                            "phone": "+1-745-937-1573x98539",
+                            "address": "90609 Cannon Prairie\nSouth Nancymouth, AL 34181"
+                        },
+                        "status": "agreement",
+                        "is_emi": false,
+                        "reciept_entry": [
+                            {
+                                "reciept_number": 44,
+                                "date": "2015-01-04",
+                                "amount": 52052,
+                                "mode": "cash",
+                                "is_cheque": false
+                            }
+                        ],
+                        "advisor": "Bryan Reilly",
+                        "date": "2015-01-04",
+                        "files": []
+                    },
+                    "3": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "Not for sale",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    },
+                    "4": {
+                        "size": "",
+                        "rate": "",
+                        "price": "",
+                        "deal_price": "",
+                        "booking_amount": "",
+                        "incentive": "",
+                        "customer": {},
+                        "status": "available",
+                        "is_emi": "",
+                        "reciept_entry": "",
+                        "advisor": "",
+                        "date": "",
+                        "files": []
+                    }
+                }
+            }
+        },
+        "address": "49109 Jonathan Street Suite 341\nManningbury, ID 98210"
+    }
+}

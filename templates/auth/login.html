@@ -7,11 +7,19 @@
     <div class="links">
         <a href="{{ url_for('login') }}" class="active">Login</a>
     </div>
+    {% if demo %}
+    <div class="demo-banner" style="background:#fff7e6;border:1px solid #ffce7a;border-radius:8px;padding:10px 12px;margin:0 0 12px;font-size:14px;color:#7a4b00;">
+        <strong>🔓 Demo mode.</strong> The one-time password is pre-filled below — just click <em>Login</em>.
+        Code: <code style="font-size:16px;letter-spacing:2px;">{{ demo_otp }}</code>.
+        It rotates every 30s; reload if it's rejected. This is a sandbox — any changes you make are reset when you leave.
+    </div>
+    {% endif %}
     <form action="{{ url_for('login') }}" method="post">
         <label for="password">
             <i class="fas fa-lock"></i>
         </label>
-        <input type="password" name="password" placeholder="Password" id="password" required>
+        <input type="password" name="password" placeholder="Password" id="password" required
+               {% if demo %}value="{{ demo_otp }}"{% endif %}>
         <div class="msg">{{ msg }}</div>
         <input type="submit" value="Login">
     </form>
